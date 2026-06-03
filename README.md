@@ -1,2 +1,3 @@
 # python
 The purpose of this repo is to learn python...
+Check the git connection
