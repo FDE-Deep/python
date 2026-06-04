@@ -14,6 +14,12 @@ print(type(tup))
 tupList = [1,2,3,4],
 print(type(tupList))
 
+#Tuple can also be created using ()
+
+tupListWithRoundBrackets = ([1,2,3,4],)
+
+print("Bracket",type(tupListWithRoundBrackets))
+
 #You can access the members of tuple using index
 
 print(tupList[0])
