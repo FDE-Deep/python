@@ -12,6 +12,8 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 - Set behavior: uniqueness, unordered storage, membership, empty set creation
 - Strings: quotes, escaping, concatenation, multiline strings, indexing, slicing, negative indices
 - Dictionaries: key-value data, nested dictionaries, access, get method, default values
+- Functions: defining reusable code, passing arguments, returning values
+- User input: reading keyboard input with `input()` and using it in programs
 
 ## Topics and file summaries
 
@@ -74,6 +76,23 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Shows access by key and nested key lookup
   - Uses `get` with default values
   - Shows `len` on dictionaries
+
+### Functions
+
+- `funtions/index.py`
+  - Explains what functions are and when to use them
+  - Shows a simple function with no parameters
+  - Demonstrates passing arguments to a function
+  - Returns values from a function using `return`
+  - Prints and stores the returned result
+
+### User input
+
+- `userInput/index.py`
+  - Reads input from the user with `input()`
+  - Asks for a student's name and roll number
+  - Stores user input in a dictionary
+  - Prints the collected student data in a formatted output
 
 ### Operators
 
