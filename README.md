@@ -75,6 +75,22 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Uses `get` with default values
   - Shows `len` on dictionaries
 
+### Operators
+
+- `operators/arithmaticOperators.py`
+  - Demonstrates arithmetic operators: `+`, `-`, `*`, `/`, `%`, `**`, `//`
+  - Shows shorthand assignment forms like `+=`, `-=`, `*=`, `/=`, `%=`, `**=`, `//=`
+
+- `operators/assignmentOperator.py`
+  - Shows the assignment operator `=` and tuple-style multiple assignment (`x, y, z = 1, 2, 3`)
+
+- `operators/comparisonOperators.py`
+  - Covers comparison operators: `==`, `!=`, `>`, `<`, `>=`, `<=`
+  - Demonstrates boolean results from comparisons
+
+- `operators/logicalOperators.py`
+  - Explains logical operators `and`, `or`, `not` and how to combine conditional expressions
+
 ## Next steps
 
 - Continue learning intersections with sets
