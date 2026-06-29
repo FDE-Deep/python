@@ -15,6 +15,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 - Functions: defining reusable code, passing arguments, returning values
 - User input: reading keyboard input with `input()` and using it in programs
 - Conditional statements: if-elif-else and match-case for decision-making and flow control
+- Loops: while loops for iterative processing and pattern generation
 
 ## Topics and file summaries
 
@@ -125,6 +126,14 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 - `operators/logicalOperators.py`
   - Explains logical operators `and`, `or`, `not` and how to combine conditional expressions
+
+### Loops
+
+- `loop/while.py`
+  - Demonstrates while loops for iterative processing
+  - Creates a triangle pattern using nested while loops
+  - Shows how to control loop iterations and nested loop logic
+  - Uses loop counters and conditional logic to build ASCII art patterns
 
 ## Next steps
 
