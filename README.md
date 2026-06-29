@@ -14,6 +14,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 - Dictionaries: key-value data, nested dictionaries, access, get method, default values
 - Functions: defining reusable code, passing arguments, returning values
 - User input: reading keyboard input with `input()` and using it in programs
+- Conditional statements: if-elif-else for decision-making and flow control
 
 ## Topics and file summaries
 
@@ -93,6 +94,15 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Asks for a student's name and roll number
   - Stores user input in a dictionary
   - Prints the collected student data in a formatted output
+
+### Conditional statements (if-elif-else)
+
+- `if-elif-else/index.py`
+  - Demonstrates if-else statements for basic conditions
+  - Shows how to check if a number is even or odd
+  - Covers if-elif-else for multiple conditions and input validation
+  - Validates user input before processing
+  - Includes debugging tips using VS Code breakpoints
 
 ### Operators
 
