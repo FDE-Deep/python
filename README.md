@@ -135,6 +135,12 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Shows how to control loop iterations and nested loop logic
   - Uses loop counters and conditional logic to build ASCII art patterns
 
+- `loop/for.py`
+  - Demonstrates for loops for iterating over data structures
+  - Shows how to iterate through a list of dictionaries
+  - Accesses nested data within each dictionary during iteration
+  - Prints structured data from collections using for loops
+
 ## Next steps
 
 - Continue learning intersections with sets
