@@ -15,7 +15,8 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 - Functions: defining reusable code, passing arguments, returning values
 - User input: reading keyboard input with `input()` and using it in programs
 - Conditional statements: if-elif-else and match-case for decision-making and flow control
-- Loops: while loops for iterative processing and pattern generation
+- Loops: while loops and for loops for iterative processing and pattern generation
+- Loop control: continue and break statements for controlling loop flow
 
 ## Topics and file summaries
 
@@ -140,6 +141,8 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Shows how to iterate through a list of dictionaries
   - Accesses nested data within each dictionary during iteration
   - Prints structured data from collections using for loops
+  - Uses `continue` statement to skip iterations based on conditions
+  - Uses `break` statement to exit loops when specific conditions are met
 
 ## Next steps
 
