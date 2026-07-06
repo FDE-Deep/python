@@ -17,6 +17,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 - Conditional statements: if-elif-else and match-case for decision-making and flow control
 - Loops: while loops and for loops for iterative processing and pattern generation
 - Loop control: continue and break statements for controlling loop flow
+- Object-oriented programming: classes, objects, methods, the `self` parameter, and constructors
 
 ## Topics and file summaries
 
@@ -143,6 +144,14 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Prints structured data from collections using for loops
   - Uses `continue` statement to skip iterations based on conditions
   - Uses `break` statement to exit loops when specific conditions are met
+
+### Object-oriented programming
+
+- `oop/class.py`
+  - Introduces the concept of classes and objects in Python
+  - Demonstrates how to create a class and instantiate an object
+  - Explains why methods need the `self` parameter
+  - Shows how to use the `__init__` constructor to initialize object attributes dynamically
 
 ## Next steps
 
