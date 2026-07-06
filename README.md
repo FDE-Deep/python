@@ -8,6 +8,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 - Variable assignment and arithmetic
 - Core data types: int, float, str, None, bool, list, tuple, set, dict, complex
 - List operations: concatenation, slicing, nested lists, append, extend, insert, remove, pop, reverse, sort
+- List comprehension: concise list creation from iterables with optional filtering and conditional expressions
 - Tuple properties: immutability, creation syntax, indexing, nested mutable contents
 - Set behavior: uniqueness, unordered storage, membership, empty set creation
 - Strings: quotes, escaping, concatenation, multiline strings, indexing, slicing, negative indices
@@ -23,21 +24,21 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### Variables
 
-- `variables/index.py`
+- `basics/variables/index.py`
   - Prints the first Python program
   - Demonstrates variable assignment and storing values
   - Shows arithmetic with variables
 
 ### Data types overview
 
-- `datatypes/index.py`
+- `basics/datatypes/index.py`
   - Lists the main Python data types
   - Demonstrates examples for `int`, `float`, `str`, `None`, `bool`, `list`, `tuple`, `set`, `dict`, and `complex`
   - Shows how booleans convert to integers (`True` → `1`, `False` → `0`)
 
 ### Lists
 
-- `datatypes/list.py`
+- `basics/datatypes/list.py`
   - Defines lists and shows list creation
   - Combines lists with `+`
   - Accesses list items with indexing and slices
@@ -46,9 +47,15 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Uses `count`, `index`, `pop`, `remove`, and `del`
   - Reverses and sorts lists
 
+- `basics/datatypes/listComprehension.py`
+  - Introduces list comprehension syntax for creating lists from iterables
+  - Demonstrates filtering values with `if` clauses
+  - Shows how to include conditional expressions inside a comprehension
+  - Compares list comprehension to equivalent loop-based code
+
 ### Tuples
 
-- `datatypes/tuple.py`
+- `basics/datatypes/tuple.py`
   - Explains tuple immutability versus lists
   - Shows tuple creation with and without parentheses
   - Covers single-item tuple syntax
@@ -57,7 +64,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### Sets
 
-- `datatypes/set.py`
+- `basics/datatypes/set.py`
   - Explains sets as unordered, unique collections
   - Shows duplicate removal and membership checks
   - Covers set length and empty set creation using `set()`
@@ -65,7 +72,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### Strings
 
-- `datatypes/string.py`
+- `basics/datatypes/string.py`
   - Demonstrates string creation with quotes
   - Shows printing strings multiple times using `*`
   - Covers quote escaping and file path escaping
@@ -74,7 +81,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### Dictionaries
 
-- `datatypes/dict.py`
+- `basics/datatypes/dict.py`
   - Introduces dictionaries as key-value collections
   - Demonstrates nested dictionaries for student data
   - Shows access by key and nested key lookup
@@ -83,7 +90,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### Functions
 
-- `funtions/index.py`
+- `basics/funtions/index.py`
   - Explains what functions are and when to use them
   - Shows a simple function with no parameters
   - Demonstrates passing arguments to a function
@@ -92,7 +99,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### User input
 
-- `userInput/index.py`
+- `basics/userInput/index.py`
   - Reads input from the user with `input()`
   - Asks for a student's name and roll number
   - Stores user input in a dictionary
@@ -100,14 +107,14 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### Conditional statements
 
-- `conditionalStatments/index.py`
+- `basics/conditionalStatments/index.py`
   - Demonstrates if-else statements for basic conditions
   - Shows how to check if a number is even or odd
   - Covers if-elif-else for multiple conditions and input validation
   - Validates user input before processing
   - Includes debugging tips using VS Code breakpoints
 
-- `conditionalStatments/match.py`
+- `basics/conditionalStatments/match.py`
   - Introduces match-case statements (Python 3.10+) as an alternative to if-elif-else
   - Demonstrates a simple arithmetic calculator using match-case
   - Shows pattern matching with different cases
@@ -115,29 +122,29 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 
 ### Operators
 
-- `operators/arithmaticOperators.py`
+- `basics/operators/arithmaticOperators.py`
   - Demonstrates arithmetic operators: `+`, `-`, `*`, `/`, `%`, `**`, `//`
   - Shows shorthand assignment forms like `+=`, `-=`, `*=`, `/=`, `%=`, `**=`, `//=`
 
-- `operators/assignmentOperator.py`
+- `basics/operators/assignmentOperator.py`
   - Shows the assignment operator `=` and tuple-style multiple assignment (`x, y, z = 1, 2, 3`)
 
-- `operators/comparisonOperators.py`
+- `basics/operators/comparisonOperators.py`
   - Covers comparison operators: `==`, `!=`, `>`, `<`, `>=`, `<=`
   - Demonstrates boolean results from comparisons
 
-- `operators/logicalOperators.py`
+- `basics/operators/logicalOperators.py`
   - Explains logical operators `and`, `or`, `not` and how to combine conditional expressions
 
 ### Loops
 
-- `loop/while.py`
+- `basics/loop/while.py`
   - Demonstrates while loops for iterative processing
   - Creates a triangle pattern using nested while loops
   - Shows how to control loop iterations and nested loop logic
   - Uses loop counters and conditional logic to build ASCII art patterns
 
-- `loop/for.py`
+- `basics/loop/for.py`
   - Demonstrates for loops for iterating over data structures
   - Shows how to iterate through a list of dictionaries
   - Accesses nested data within each dictionary during iteration
