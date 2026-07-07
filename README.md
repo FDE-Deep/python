@@ -18,7 +18,7 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 - Conditional statements: if-elif-else and match-case for decision-making and flow control
 - Loops: while loops and for loops for iterative processing and pattern generation
 - Loop control: continue and break statements for controlling loop flow
-- Object-oriented programming: classes, objects, methods, the `self` parameter, and constructors
+- Object-oriented programming: classes, objects, methods, the `self` parameter, constructors, class methods, and static methods
 
 ## Topics and file summaries
 
@@ -159,6 +159,16 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Demonstrates how to create a class and instantiate an object
   - Explains why methods need the `self` parameter
   - Shows how to use the `__init__` constructor to initialize object attributes dynamically
+
+- `oop/classMethod.py`
+  - Introduces class variables and class methods
+  - Demonstrates counting instances using a `@classmethod`
+  - Shows how class methods access shared class state via `cls`
+
+- `oop/staticMethod.py`
+  - Introduces static methods as utility functions inside a class
+  - Demonstrates a `@staticmethod` that checks if a student passed without accessing instance state
+  - Shows how static methods are called from the class directly
 
 ## Next steps
 
