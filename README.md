@@ -170,6 +170,15 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Demonstrates a `@staticmethod` that checks if a student passed without accessing instance state
   - Shows how static methods are called from the class directly
 
+## Roadmap
+
+Roadmap to become an awesome python developer:
+
+- Phase 1
+  - Week 1
+    - Python Fluency
+      - Day 01: learned about lists in Python, including creating lists, accessing items with index and slicing, iterating through values, updating and inserting items, removing items, using list comprehension, and sorting lists
+
 ## Next steps
 
 - Continue learning intersections with sets
