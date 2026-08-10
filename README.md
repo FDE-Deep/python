@@ -176,8 +176,9 @@ Roadmap to become an awesome python developer:
 
 - Phase 1
   - Python Fluency
-    -Topics:
-    - List: Introduction to Python lists, including creating lists, accessing items by index and slicing, iterating through values, updating and inserting items, removing items, copying lists safely, joining lists, using list comprehension, and sorting lists
+    - Topics:
+      - List: Introduction to Python lists, including creating lists, accessing items by index and slicing, iterating through values, updating and inserting items, removing items, copying lists safely, joining lists, using list comprehension, and sorting lists
+      - Tuple: Introduction to Python tuples, including creating tuples, accessing items by index and slicing, checking membership, handling single-item tuples, updating tuples through conversion, unpacking values, iterating through tuples, joining tuples, and using tuple methods like index and count
 
 ## Next steps
 
