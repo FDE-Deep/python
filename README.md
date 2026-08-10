@@ -176,11 +176,108 @@ Roadmap to become an awesome python developer:
 
 - Phase 1
   - Python Fluency
-    - Topics:
-      - List: Introduction to Python lists, including creating lists, accessing items by index and slicing, iterating through values, updating and inserting items, removing items, copying lists safely, joining lists, using list comprehension, and sorting lists
-      - Tuple: Introduction to Python tuples, including creating tuples, accessing items by index and slicing, checking membership, handling single-item tuples, updating tuples through conversion, unpacking values, iterating through tuples, joining tuples, and using tuple methods like index and count
+    - Topics covered so far:
+      - List:
+        - Creating a list: Lists store multiple values in order.
+          ```python
+          fruits = ["Apple", "Banana", "Orange"]
+          print(fruits)
+          ```
+        - Accessing items with index and slicing: You can read values using indexes or slices.
+          ```python
+          print(fruits[0])
+          print(fruits[1:3])
+          ```
+        - Updating and inserting values: You can replace existing values or add new ones.
+          ```python
+          fruits[2] = "Mango"
+          fruits.insert(1, "Kiwi")
+          print(fruits)
+          ```
+        - Removing items: Use remove, pop, or delete to remove values.
+          ```python
+          fruits.remove("Banana")
+          fruits.pop(0)
+          print(fruits)
+          ```
+        - List comprehension: A shorter way to create a new list from an existing one.
+          ```python
+          fruits_without_banana = [fruit for fruit in fruits if fruit != "Banana"]
+          print(fruits_without_banana)
+          ```
+        - Sorting and copying: You can sort a list and make a safe copy.
+          ```python
+          fruits.sort()
+          copy_fruits = fruits.copy()
+          print(copy_fruits)
+          ```
 
-## Next steps
+      - Tuple:
+        - Creating a tuple: Tuples are ordered and immutable.
+          ```python
+          student_data = ("Rahul", 20, 1)
+          print(student_data)
+          ```
+        - Accessing values: You can read tuple values using indexes and slices.
+          ```python
+          print(student_data[0])
+          print(student_data[:2])
+          ```
+        - Checking membership: You can test whether an item exists in the tuple.
+          ```python
+          print("Rahul" in student_data)
+          ```
+        - Single-item tuple: Add a comma so Python treats it as a tuple.
+          ```python
+          data = (1,)
+          print(type(data))
+          ```
+        - Updating through conversion: Convert to a list to change the values, then convert back to a tuple.
+          ```python
+          student_data_list = list(student_data)
+          student_data_list[2] = 12
+          student_data = tuple(student_data_list)
+          print(student_data)
+          ```
+        - Unpacking and joining: You can unpack values into variables and join tuples together.
+          ```python
+          name, age, roll_no = student_data
+          combined = student_data + (3,)
+          print(name, age, roll_no)
+          print(combined)
+          ```
 
-- Continue learning intersections with sets
-- Add more examples for loops, conditionals, functions, and modules
+      - Set:
+        - Creating a set: Sets store unique values and ignore duplicates.
+          ```python
+          data = {1, 2, 3, 3}
+          print(data)
+          ```
+        - Checking membership: Use in to see whether a value exists.
+          ```python
+          print(1 in data)
+          ```
+        - Adding values: Use add or update to insert new items.
+          ```python
+          data.add(4)
+          data.update([5, 6])
+          print(data)
+          ```
+        - Removing values: Use remove, discard, clear, or delete to remove items.
+          ```python
+          data.remove(1)
+          data.discard(2)
+          print(data)
+          ```
+        - Union and intersection: Combine sets or find the common values.
+          ```python
+          set1 = {1, 2, 3}
+          set2 = {3, 4}
+          print(set1 | set2)
+          print(set1 & set2)
+          ```
+        - Difference and symmetric difference: Find what is unique or different between sets.
+          ```python
+          print(set1 - set2)
+          print(set1 ^ set2)
+          ```
