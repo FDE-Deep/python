@@ -1,7 +1,7 @@
 # day 1: Learn about lists in python
 
 # A list is a collection of various data types. Usually , we keep the same data type in a list. Otherwise. it will be
-# difficult to do some operations on list unless we have added data as as tuple.
+# difficult to do some operations on list unless we have added data as a tuple.
 
 # lets say we have some fruits and we want to store fruits name in the list.
 
@@ -154,3 +154,116 @@ def customSort(item):
 
 fruits.sort(key = customSort)
 print(fruits)
+
+
+# How to copy a list
+
+fruits = ["Apple","Banana","Orange"]
+
+copyFruits = fruits
+
+print(copyFruits) # ['Apple', 'Banana', 'Orange']
+
+# the problem with this is, if i make any change in the copy fruits , it will impact the original fruits list as well. This is because copy fruits contains the reference of the original fruits list.
+
+copyFruits.append("Mango")
+
+print("Fruits = ",fruits) # Fruits =  ['Apple', 'Banana', 'Orange', 'Mango']
+print("Copied fruits = ",copyFruits) # Copied fruits =  ['Apple', 'Banana', 'Orange', 'Mango']
+
+# This is a disaster as we work on some project, this can be a big problem
+
+# So, there are ways using which we can create a new copy of the list without referencing to the original one.
+
+# copy
+
+fruits = ["Apple"]
+
+copyFruits = fruits.copy()
+
+copyFruits.append("Orange")
+
+print(fruits)
+print(copyFruits)
+
+# We can also use list function
+
+fruits = ["Orange"]
+copyFruits = list(fruits)
+
+copyFruits.append("Apple")
+
+print(fruits)
+print(copyFruits)
+
+#We can also use slice operator
+
+fruits = ["Apple","Kiwi"]
+copyFruits = fruits[:]
+
+copyFruits.append("Orange")
+
+print(fruits)
+print(copyFruits)
+
+# For list, always prefer copy function. This only does the shallow copy. Any inner level nesting is shared. To copy the nesting, use deepcopy
+# list method can be used when you are not sure whether its a list or tuple or any other iterable
+# slice operator - old approach dont use
+
+
+# Join Lists
+
+# We can join two or more list by using + sign
+
+list1 = [1]
+list2 = [2]
+
+list3 = list1 + list2;
+
+print(list3) # [1, 2]
+
+# Another way to do is by appending the list
+
+list1 = [4]
+list2 = [5]
+
+list1.append(list2)
+print(list1) # [4, [5]]
+
+# If you see the above output, it is appending the entire list instead of items
+
+# So , we need to iterate on the list and append each item
+
+list1=[4]
+for item in list2:
+    list1.append(item)
+    
+print(list1) # [4, 5]
+
+
+# you can also extend a list
+
+list1 = [5,6]
+list2 = [7,8]
+
+list1.extend(list2)
+print(list1)
+
+# Some other methods in list
+
+# count
+
+# If you want to count the frequency of an item
+
+listCount = ["Apple","Oranges","Apple"]
+
+print(listCount.count("Apple")) # 2
+
+
+# index - to find the index of an item
+
+print(listCount.index("Oranges")) # 1
+
+# You can also define from which index it should start searching
+
+print(listCount.index("Oranges",1)) # 1

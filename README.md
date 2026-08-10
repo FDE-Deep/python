@@ -175,9 +175,9 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
 Roadmap to become an awesome python developer:
 
 - Phase 1
-  - Week 1
-    - Python Fluency
-      - Day 01: learned about lists in Python, including creating lists, accessing items with index and slicing, iterating through values, updating and inserting items, removing items, using list comprehension, and sorting lists
+  - Python Fluency
+    -Topics:
+    - List: Introduction to Python lists, including creating lists, accessing items by index and slicing, iterating through values, updating and inserting items, removing items, copying lists safely, joining lists, using list comprehension, and sorting lists
 
 ## Next steps
 
