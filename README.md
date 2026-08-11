@@ -381,3 +381,141 @@ Roadmap to become an awesome python developer:
         | Ordered? | yes | yes | no | yes (insertion) |
         | Duplicates? | yes | yes | no | keys unique |
         | Mutable? | yes | no | yes | yes |
+      - Exercises:
+        - Square each number: Given `nums = [1, 2, 3, 4, 5]`, build a list of each number squared.
+
+          ```python
+          nums = [1, 2, 3, 4, 5]
+          squaredNums = [num*num for num in nums ]
+
+          print(squaredNums) # [1, 4, 9, 16, 25]
+          ```
+
+        - Word lengths: Given `words = ["hello", "world", "python"]`, build a list of the length of each word.
+
+          ```python
+          words = ["hello", "world", "python"]
+
+          lengthOfWords = [len(word) for word in words]
+
+          print(lengthOfWords) # [5, 5, 6]
+          ```
+
+        - Celsius to Fahrenheit: Given `celsius = [0, 20, 37, 100]`, convert each temperature.
+
+          ```python
+          celsius = [0, 20, 37, 100]
+
+          fahrenheit = [c * 9/5 + 32 for c in celsius]
+
+          print(fahrenheit) # [32.0, 68.0, 98.6, 212.0]
+          ```
+
+        - Even numbers only: From `nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]`, keep only the even numbers.
+
+          ```python
+          nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+          even = [num for num in nums if num % 2 == 0]
+
+          print(even) # [2, 4, 6, 8, 10]
+          ```
+
+        - Longer words: From `words = ["cat", "elephant", "dog", "giraffe", "ox"]`, keep only words longer than 3 letters.
+
+          ```python
+          words = ["cat", "elephant", "dog", "giraffe", "ox"]
+
+          longerThanThree = [word for word in words if len(word) > 3]
+
+          print(longerThanThree) # ['elephant', 'giraffe']
+          ```
+
+        - Divisible by 2 and 3: From `nums = range(1, 21)`, keep numbers divisible by both 2 and 3.
+
+          ```python
+          nums = range(1, 21)
+
+          numsDivisibleByTwoAndThree = [num for num in nums if num % 2 == 0 and num % 3 == 0]
+          print(numsDivisibleByTwoAndThree) # [6, 12, 18]
+          ```
+
+        - Negative to zero: From `nums = [-5, 3, -2, 8, -1, 0]`, make negatives 0 and keep non-negatives unchanged.
+
+          ```python
+          nums = [-5, 3, -2, 8, -1, 0]
+
+          integers = [0 if num < 0 else num for num in nums]
+          print(integers) # [0, 3, 0, 8, 0, 0]
+          ```
+
+        - Even / odd labels: From `nums = [1, 2, 3, 4, 5, 6]`, produce a list of "even" or "odd" labels.
+
+          ```python
+          nums = [1, 2, 3, 4, 5, 6]
+
+          listOfEvenOdd = ["even" if num % 2 == 0 else "odd" for num in nums]
+          print(listOfEvenOdd) # ['odd', 'even', 'odd', 'even', 'odd', 'even']
+          ```
+
+        - Capitalize names: Given `names = ["xicor", "vegeta", "korin"]`, capitalize each name.
+
+          ```python
+          names = ["xicor", "vegeta", "korin"]
+
+          capitalizeNames = [name.capitalize() for name in names]
+          print(capitalizeNames) # ['Xicor', 'Vegeta', 'Korin']
+          ```
+
+        - First letters: Given `sentence = "the quick brown fox"`, build a list of the first letter of each word.
+          ```python
+          sentence = "the quick brown fox"
+          firstLetterOfEachWord = [s[0] for s in sentence.split(" ")]
+          print(firstLetterOfEachWord) # ['t', 'q', 'b', 'f']
+          ```
+        - Flatten matrix: Given `matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]`, flatten it into a single list.
+
+          ```python
+          matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+          singleList = [y for x in matrix for y in x]
+          print(singleList) # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+          ```
+
+        - Nested school names: From a nested `school` structure, build a flat list of every person's name.
+
+          ```python
+          students = {
+              "data": [{"name":"Xicor"}, {"name": "Vegeta"}]
+          }
+
+          teachers = {
+              "data": [{"name":"Master Roshi"}, {"name": "Korin"}]
+          }
+
+          school = {
+              "students": students,
+              "teachers": teachers
+          }
+
+          names = [d["name"] for _, value in school.items() for d in value["data"]]
+          print(names) # ['Xicor', 'Vegeta', 'Master Roshi', 'Korin']
+          ```
+
+        - Filtered flattening: From `matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]`, build a flat list of even numbers multiplied by 10.
+
+          ```python
+          matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+          flatList = [y * 10 for x in matrix for y in x if y % 2 == 0]
+          print(flatList) # [20, 40, 60, 80]
+          ```
+
+        - Filter tuple pairs: Given `pairs = [("amy", 88), ("ben", 32), ("cara", 71)]`, build a list of names with score 40 or above.
+
+          ```python
+          pairs = [("amy", 88), ("ben", 32), ("cara", 71)]
+
+          names = [name for (name, score) in pairs if score >= 40]
+          print(names) # ['amy', 'ben', 'cara']
+          ```
