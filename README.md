@@ -281,3 +281,80 @@ Roadmap to become an awesome python developer:
           print(set1 - set2)
           print(set1 ^ set2)
           ```
+
+      - Dictionary:
+        - Dictionary basics: Dictionaries store ordered, changeable data as key-value pairs.
+          ```python
+          student_data = {"name": "student1", "age": "20", "rollNo": "12"}
+          print(student_data)
+          ```
+        - Checking dictionary length: Use `len()` to count how many entries are present.
+          ```python
+          print(len(student_data))
+          ```
+        - Accessing items by key: Look up values with square brackets.
+          ```python
+          print(student_data["name"])
+          ```
+        - Using `get()` for safe access: `get()` returns `None` or a default value if the key is missing.
+          ```python
+          print(student_data.get("name"))
+          print(student_data.get("address", "not found"))
+          ```
+        - Viewing keys, values, and items: `keys()`, `values()`, and `items()` return live views of the dictionary.
+          ```python
+          keys = student_data.keys()
+          values = student_data.values()
+          print(keys)
+          print(values)
+          ```
+        - Checking membership: Use `in` to test whether a key exists.
+          ```python
+          print("name" in student_data)
+          ```
+        - Changing values: Assign a new value to an existing key.
+          ```python
+          student_data["rollNo"] = "20"
+          print(student_data)
+          ```
+        - Updating dictionaries: Use `update()` to change or add multiple entries.
+          ```python
+          student_data.update({"rollNo": "500", "topTalent": "Yes"})
+          print(student_data)
+          ```
+        - Adding items: Assign a value to a new key to add it.
+          ```python
+          student_data["hasIdCard"] = True
+          print(student_data)
+          ```
+        - Removing items: Use `pop()`, `popitem()`, `del`, or `clear()` to remove entries.
+          ```python
+          student_data.pop("topTalent")
+          student_data.popitem()
+          del student_data["rollNo"]
+          student_data.clear()
+          print(student_data)
+          ```
+        - Iterating dictionaries: Loop over keys, values, or key-value pairs with `items()`.
+          ```python
+          for key, value in student_data.items():
+              print(key, "=", value)
+          ```
+        - Copying dictionaries: Use `copy()` or `dict()` to make a separate copy.
+          ```python
+          copied = student_data.copy()
+          copied2 = dict(student_data)
+          print(copied)
+          print(copied2)
+          ```
+        - Nested dictionaries: Store structured data and loop through nested entries.
+          ```python
+          school = {
+              "students": {"data": [{"name": "Xicor"}, {"name": "Vegeta"}]},
+              "teachers": {"data": [{"name": "Master Roshi"}, {"name": "Korin"}]}
+          }
+          for role, group in school.items():
+              print(role)
+              for person in group.get("data", []):
+                  print(person.get("name", ""))
+          ```
