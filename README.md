@@ -36,6 +36,18 @@ This repo is a Python learning workspace. It is organized by topic so you can qu
   - Demonstrates examples for `int`, `float`, `str`, `None`, `bool`, `list`, `tuple`, `set`, `dict`, and `complex`
   - Shows how booleans convert to integers (`True` → `1`, `False` → `0`)
 
+#### Data structure comparison
+
+| Operation / Type             | list                       | tuple     | set          | dict              |
+| ---------------------------- | -------------------------- | --------- | ------------ | ----------------- |
+| Access by index `x[i]`       | O(1)                       | O(1)      | — (no index) | O(1) by _key_     |
+| Search / membership `v in x` | O(n)                       | O(n)      | O(1) avg     | O(1) avg (by key) |
+| Insert / add                 | O(1) append end · O(n) mid | immutable | O(1) avg     | O(1) avg          |
+| Delete                       | O(1) end · O(n) mid/value  | immutable | O(1) avg     | O(1) avg          |
+| Ordered?                     | yes                        | yes       | no           | yes (insertion)   |
+| Duplicates?                  | yes                        | yes       | no           | keys unique       |
+| Mutable?                     | yes                        | no        | yes          | yes               |
+
 ### Lists
 
 - `basics/datatypes/list.py`
@@ -358,3 +370,14 @@ Roadmap to become an awesome python developer:
               for person in group.get("data", []):
                   print(person.get("name", ""))
           ```
+
+      - Data structure comparison:
+        | Operation / Type | list | tuple | set | dict |
+        |---|---|---|---|---|
+        | Access by index `x[i]` | O(1) | O(1) | — (no index) | O(1) by _key_ |
+        | Search / membership `v in x` | O(n) | O(n) | O(1) avg | O(1) avg (by key) |
+        | Insert / add | O(1) append end · O(n) mid | immutable | O(1) avg | O(1) avg |
+        | Delete | O(1) end · O(n) mid/value | immutable | O(1) avg | O(1) avg |
+        | Ordered? | yes | yes | no | yes (insertion) |
+        | Duplicates? | yes | yes | no | keys unique |
+        | Mutable? | yes | no | yes | yes |
