@@ -520,3 +520,110 @@ Roadmap to become an awesome python developer:
             names = [name for (name, score) in pairs if score >= 40]
             print(names) # ['amy', 'cara']
             ```
+
+        - dictComprehension:
+          - Cube numbers: Given `nums = [1, 2, 3, 4, 5]`, build a dict mapping each number to its cube.
+
+            ```python
+            nums = [1, 2, 3, 4, 5]
+            cubeNums = {num: num*num*num for num in nums}
+            print(cubeNums) # {1: 1, 2: 8, 3: 27, 4: 64, 5: 125}
+            ```
+
+          - Word lengths: Given `words = ["cat", "elephant", "dog"]`, build a dict mapping each word to its length.
+
+            ```python
+            words = ["cat", "elephant", "dog"]
+            wordsLength = {word: len(word) for word in words}
+            print(wordsLength) # {'cat': 3, 'elephant': 8, 'dog': 3}
+            ```
+
+          - Capitalized names: Given `names = ["xicor", "vegeta", "korin"]`, build a dict mapping each name to its capitalized form.
+
+            ```python
+            names = ["xicor", "vegeta", "korin"]
+            capitalizedNames = {name: name.capitalize() for name in names}
+            print(capitalizedNames) # {'xicor': 'Xicor', 'vegeta': 'Vegeta', 'korin': 'Korin'}
+            ```
+
+          - Product prices: Given `products = ["pen", "book", "bag"]` and `prices = [10, 50, 120]`, build a dict mapping each product to its price.
+
+            ```python
+            products = ["pen", "book", "bag"]
+            prices = [10, 50, 120]
+            pricesOfProducts = dict(zip(products, prices))
+            print(pricesOfProducts) # {'pen': 10, 'book': 50, 'bag': 120}
+            ```
+
+          - Zip keys and values: Given `keys = ["name", "age", "city"]` and `values = ["Xicor", 22, "Tokyo"]`, build a dict from the pairs.
+
+            ```python
+            keys = ["name", "age", "city"]
+            values = ["Xicor", 22, "Tokyo"]
+            personInfo = dict(zip(keys, values))
+            print(personInfo) # {'name': 'Xicor', 'age': 22, 'city': 'Tokyo'}
+            ```
+
+          - Filter scores: Given `scores = {"amy": 88, "ben": 32, "cara": 71, "dan": 45}`, build a dict with only scores 50 or above.
+
+            ```python
+            scores = {"amy": 88, "ben": 32, "cara": 71, "dan": 45}
+            onlyFiftyOrAbove = {key: value for key, value in scores.items() if value >= 50}
+            print(onlyFiftyOrAbove) # {'amy': 88, 'cara': 71}
+            ```
+
+          - Under 100 prices: Given `prices = {"pen": 10, "book": 50, "bag": 120, "pin": 5}`, build a dict of the items priced under 100.
+
+            ```python
+            prices = {"pen": 10, "book": 50, "bag": 120, "pin": 5}
+            pricesUnderHundered = {key: value for key, value in prices.items() if value < 100}
+            print(pricesUnderHundered) # {'pen': 10, 'book': 50, 'pin': 5}
+            ```
+
+          - Increase prices: Given `prices = {"pen": 10, "book": 50}`, build a new dict with every price increased by 10%.
+
+            ```python
+            prices = {"pen": 10, "book": 50}
+            pricesIncreased = {key: value * 1.1 for key, value in prices.items()}
+            print(pricesIncreased) # {'pen': 11.0, 'book': 55.00000000000001}
+            ```
+
+          - Pass or fail: Given `scores = {"amy": 88, "ben": 32}`, build a dict mapping each name to "pass" or "fail".
+
+            ```python
+            scores = {"amy": 88, "ben": 32}
+            passOrFail = {key: "pass" if value >= 40 else "fail" for key, value in scores.items()}
+            print(passOrFail) # {'amy': 'pass', 'ben': 'fail'}
+            ```
+
+          - Reverse codes: Given `codes = {"IN": "India", "JP": "Japan", "US": "USA"}`, build the reverse dict.
+
+            ```python
+            codes = {"IN": "India", "JP": "Japan", "US": "USA"}
+            reverseCodes = {value: key for key, value in codes.items()}
+            print(reverseCodes) # {'India': 'IN', 'Japan': 'JP', 'USA': 'US'}
+            ```
+
+          - Fruit positions: Given `fruits = ["apple", "banana", "cherry"]`, map each fruit to its index.
+
+            ```python
+            fruits = ["apple", "banana", "cherry"]
+            fruitsAtPosition = {item: index for index, item in enumerate(fruits)}
+            print(fruitsAtPosition) # {'apple': 0, 'banana': 1, 'cherry': 2}
+            ```
+
+          - Word lengths filtered: Given `sentence = "the quick brown fox"`, map words longer than 3 letters to their length.
+
+            ```python
+            sentence = "the quick brown fox"
+            wordsLength = {word: len(word) for word in sentence.split() if len(word) > 3}
+            print(wordsLength) # {'quick': 5, 'brown': 5}
+            ```
+
+          - Even or odd > 5: From `nums = range(1, 11)`, map numbers greater than 5 to "even" or "odd".
+
+            ```python
+            nums = range(1, 11)
+            evenOrOddGreaterThanFive = {num: "even" if num % 2 == 0 else "odd" for num in nums if num > 5}
+            print(evenOrOddGreaterThanFive) # {6: 'even', 7: 'odd', 8: 'even', 9: 'odd', 10: 'even'}
+            ```
