@@ -121,4 +121,4 @@ print(flatList) # [20, 40, 60, 80]
 pairs = [("amy", 88), ("ben", 32), ("cara", 71)]
 
 names = [name for (name,score) in pairs if score >= 40]
-print(names) # ['amy', 'ben', 'cara']
+print(names) # ['amy', 'cara']
