@@ -371,6 +371,42 @@ Roadmap to become an awesome python developer:
                   print(person.get("name", ""))
           ```
 
+      - Generator:
+        - Introduces generator functions with `yield` and lazy iteration.
+
+          ```python
+          def first_n(n):
+              while(n > 0):
+                  yield n
+                  n -= 1
+
+          worker = first_n(5)
+          print(next(worker)) # 5
+          print(next(worker)) # 4
+          print(next(worker)) # 3
+          print(next(worker)) # 2
+          print(next(worker)) # 1
+          ```
+
+        - Demonstrates how `next()` resumes the generator and eventually raises `StopIteration` when exhausted.
+
+      - Fact:
+        - Explains iterables vs iterators and how `iter()` creates an iterator from a collection.
+          ```python
+          nums = [1, 2, 3]
+          listIter = iter(nums)
+          print(list(listIter)) # [1, 2, 3]
+          print(list(listIter)) # []
+          ```
+        - Shows that iterators are consumed once and `next()` advances the worker through items.
+          ```python
+          nums = [1, 2, 3]
+          it = iter(nums)
+          print(next(it)) # 1
+          print(next(it)) # 2
+          print(next(it)) # 3
+          ```
+
       - Data structure comparison:
         | Operation / Type | list | tuple | set | dict |
         |---|---|---|---|---|
@@ -668,3 +704,109 @@ Roadmap to become an awesome python developer:
             uniqueLabels = {"negative" if num < 0 else "zero" if num == 0 else "positive" for num in nums}
             print(uniqueLabels) # {'zero', 'negative', 'positive'}
             ```
+
+        - generatorComprehension:
+          - Double generator: Given `nums = [1, 2, 3, 4, 5]`, create a generator that yields each number doubled and then pull the first three values with next().
+
+            ```python
+            nums = [1, 2, 3, 4, 5]
+            numsWorker = (num * 2 for num in nums)
+            print(numsWorker)
+            print(next(numsWorker))
+            print(next(numsWorker))
+            print(next(numsWorker))
+            ```
+
+          - Squares generator exhaustion: Create a generator of squares, convert it to a list, then convert it again.
+
+            ```python
+            nums = [1, 2, 3, 4, 5]
+            numsWorker = (num * num for num in nums)
+            print(list(numsWorker))
+            print(list(numsWorker))
+            ```
+
+          - Odd numbers generator: From `nums = range(1, 11)`, make a generator of odd numbers and iterate it with a for loop.
+
+            ```python
+            nums = range(1, 11)
+            numsWorker = (num for num in nums if num % 2 == 1)
+            for num in numsWorker:
+                print(num, end=" ")
+            ```
+
+          - Word length generator: Given `words = ["cat", "elephant", "dog", "giraffe"]`, yield each word's length only for words longer than 3 letters.
+
+            ```python
+            words = ["cat", "elephant", "dog", "giraffe"]
+            wordsWorker = (len(word) for word in words if len(word) > 3)
+            print(next(wordsWorker))
+            print(next(wordsWorker))
+            ```
+
+          - Label generator: Create a generator that yields "neg", "zero", or "pos" for each number in `nums = [-3, 5, -1, 8, 0]`.
+
+            ```python
+            nums = [-3, 5, -1, 8, 0]
+            numsWorker = ("neg" if num < 0 else "zero" if num == 0 else "pos" for num in nums)
+            print(next(numsWorker))
+            print(next(numsWorker))
+            print(next(numsWorker))
+            print(next(numsWorker))
+            print(next(numsWorker))
+            ```
+
+          - Aggregate generator sum: Use `sum()` with a generator expression to add up all squares from `nums = [1, 2, 3, 4, 5]`.
+
+            ```python
+            nums = [1, 2, 3, 4, 5]
+            sumOfNums = sum(num * num for num in nums)
+            print(sumOfNums)
+            ```
+
+          - Max value generator: Use `max()` on a generator that adds 10 to each value from `nums = [4, 1, 7, 3, 9, 2]`.
+
+            ```python
+            nums = [4, 1, 7, 3, 9, 2]
+            maxNum = max(num + 10 for num in nums)
+            print(maxNum)
+            ```
+
+          - Count with generator: Use `sum(1 for word in words if word[0] == 'h')` to count words starting with "h".
+
+            ```python
+            words = ["hi", "hello", "hey", "howdy"]
+            sumofWordsStartsWithh = sum(1 for word in words if word[0] == 'h')
+            print(sumofWordsStartsWithh)
+            ```
+
+          - Generator exhaustion prediction: Predict the output of `list(gen)` twice on the same generator.
+
+            ```python
+            gen = (n * 2 for n in [1, 2, 3])
+            print(list(gen))
+            print(list(gen))
+            ```
+
+          - Lazy evaluation example: Predict what prints first when using a generator calling `loud(n)`.
+
+            ```python
+            def loud(x):
+                print(f"  computing {x}")
+                return x * x
+
+            gen = (loud(n) for n in [1, 2, 3])
+            print("made a generator")
+            first = next(gen)
+            print(f"got {first}")
+            ```
+
+        - generators.py:
+          - Introduces generator functions and `yield`.
+          - Shows how a generator pauses and resumes with `next()`.
+          - Demonstrates lazy computation and StopIteration handling.
+
+        - facts/forLoop.py:
+          - Explains the difference between iterables and iterators.
+          - Shows `iter()` and `next()` behavior with lists.
+          - Demonstrates that iterators are exhausted after one pass and then raise `StopIteration`.
