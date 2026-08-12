@@ -627,3 +627,44 @@ Roadmap to become an awesome python developer:
             evenOrOddGreaterThanFive = {num: "even" if num % 2 == 0 else "odd" for num in nums if num > 5}
             print(evenOrOddGreaterThanFive) # {6: 'even', 7: 'odd', 8: 'even', 9: 'odd', 10: 'even'}
             ```
+
+        - setComprehension:
+          - Square unique numbers: Given `nums = [1, 2, 2, 3, 3, 3, 4]`, build a set of each number squared.
+
+            ```python
+            nums = [1, 2, 2, 3, 3, 3, 4]
+            uniqueNumsSquared = {num*num for num in nums}
+            print(uniqueNumsSquared) # {16, 1, 4, 9}
+            ```
+
+          - Lowercase unique words: Given `words = ["Hello", "WORLD", "hello", "World"]`, build a set of the words all lowercased.
+
+            ```python
+            words = ["Hello", "WORLD", "hello", "World"]
+            lowerCaseWords = {word.lower() for word in words}
+            print(lowerCaseWords) # {'hello', 'world'}
+            ```
+
+          - Divisible by 3: From `nums = range(1, 21)`, build a set of only the numbers divisible by 3.
+
+            ```python
+            nums = range(1, 21)
+            numsDivisibleByThree = {num for num in nums if num % 3 == 0}
+            print(numsDivisibleByThree) # {3, 6, 9, 12, 15, 18}
+            ```
+
+          - Distinct word lengths: Given `sentence = "the cat sat on the mat"`, build a set of the distinct word lengths.
+
+            ```python
+            sentence = "the cat sat on the mat"
+            distinctWordLengths = {len(word) for word in sentence.split()}
+            print(distinctWordLengths) # {2, 3}
+            ```
+
+          - Negative/zero/positive labels: From `nums = [-5, 3, -2, 8, -1, 0, 4]`, build a set labeling each as "negative", "zero", or "positive".
+
+            ```python
+            nums = [-5, 3, -2, 8, -1, 0, 4]
+            uniqueLabels = {"negative" if num < 0 else "zero" if num == 0 else "positive" for num in nums}
+            print(uniqueLabels) # {'zero', 'negative', 'positive'}
+            ```
