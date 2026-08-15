@@ -810,3 +810,182 @@ Roadmap to become an awesome python developer:
           - Explains the difference between iterables and iterators.
           - Shows `iter()` and `next()` behavior with lists.
           - Demonstrates that iterators are exhausted after one pass and then raise `StopIteration`.
+
+      - OOP (Object-Oriented Programming):
+        - Fundamental concepts: Understanding objects as real-world entities with properties and behavior, and classes as blueprints for objects.
+
+        - Rectangle class:
+          - Demonstrates basic class definition with `__init__` constructor.
+          - Implements an `area()` method that calculates width × height.
+          - Shows two ways to call methods: using the class directly (passing instance) and using the instance (Python handles `self` automatically).
+
+            ```python
+            class Rectangle:
+                def __init__(self, width, height):
+                    self.width = width
+                    self.height = height
+
+                def area(self):
+                    return self.width * self.height
+
+            rectangle = Rectangle(2, 3)
+            print(Rectangle.area(rectangle))  # 6
+            print(rectangle.area())  # 6
+            ```
+
+        - BankAccount class:
+          - Demonstrates default arguments in constructors with `balance=0`.
+          - Implements `deposit()` and `withdraw()` methods that validate and modify instance state.
+          - Shows how methods update `self.balance` with error checking (amount validation, insufficient balance).
+          - Implements a `printBalance()` method to display account information.
+
+            ```python
+            class BankAccount:
+                def __init__(self, owner, balance=0):
+                    self.owner = owner
+                    self.balance = balance
+
+                def deposit(self, amount):
+                    if amount <= 0:
+                        print(f"The deposited amount must be greater than 0")
+                    else:
+                        self.balance += amount
+
+                def withdraw(self, amount):
+                    if amount <= 0:
+                        print(f"Withdrawal amount must be greater than 0")
+                    elif amount > self.balance:
+                        print(f"Insufficient Balance")
+                    else:
+                        self.balance -= amount
+
+                def printBalance(self):
+                    print(f"{self.owner}'s account balance is {self.balance}")
+
+            customer = BankAccount("Xicor")
+            customer.deposit(100)
+            customer.withdraw(30)
+            customer.printBalance()  # Xicor's account balance is 70
+            ```
+
+        - Counter class:
+          - Simple class that maintains an internal counter state.
+          - Implements `increment()` to add 1 to the count.
+          - Implements `get()` to return the current count value.
+
+            ```python
+            class Counter:
+                def __init__(self):
+                    self.count = 0
+
+                def increment(self):
+                    self.count += 1
+
+                def get(self):
+                    return self.count
+
+            count = Counter()
+            count.increment()
+            count.increment()
+            count.increment()
+            print(count.get())  # 3
+            ```
+
+        - Person class:
+          - Demonstrates calculating derived values from instance attributes.
+          - Implements `age_in()` method that takes a year parameter and calculates age.
+          - Shows error handling for invalid input (negative age when current year is before birth year).
+
+            ```python
+            class Person:
+                def __init__(self, name, birth_year):
+                    self.name = name
+                    self.birth_year = birth_year
+
+                def age_in(self, current_year):
+                    if current_year < self.birth_year:
+                        return -1
+                    return current_year - self.birth_year
+
+            person = Person("Xicor", 1990)
+            age = person.age_in(2025)
+            if age == -1:
+                print("Invalid current year")
+            else:
+                print(f"The age of {person.name} is {age}")  # The age of Xicor is 35
+            ```
+
+        - Composition (Engine and Car):
+          - Demonstrates composition pattern where a `Car` object contains an `Engine` object.
+          - Engine class has `__init__` and `describe()` method.
+          - Car class takes a make string and an Engine object in its constructor.
+          - Car's `describe()` method calls the engine's `describe()` method (object collaboration).
+
+            ```python
+            class Engine:
+                def __init__(self, horsepower):
+                    self.horsepower = horsepower
+
+                def describe(self):
+                    return f"{self.horsepower} HP engine"
+
+            class Car:
+                def __init__(self, make, engine):
+                    self.make = make
+                    self.engine = engine
+
+                def describe(self):
+                    return f"A {self.make} has {self.engine.describe()}"
+
+            engine = Engine(2000)
+            car = Car("Ferari", engine)
+            print(car.describe())  # A Ferari has 2000 HP engine
+            ```
+
+        - Dunder methods (double underscore methods):
+          - These are special methods that override built-in functionality.
+          - Examples include `__repr__`, `__eq__`, `__add__`.
+
+        - Rectangle with dunder methods:
+          - Implements `__repr__()` to return a string representation like `"Rectangle(4,5)"`.
+          - Implements `__eq__()` to compare two Rectangle objects by their dimensions.
+
+            ```python
+            class Rectangle:
+                def __init__(self, width, height):
+                    self.width = width
+                    self.height = height
+
+                def __repr__(self):
+                    return f"Rectangle({self.width},{self.height})"
+
+                def __eq__(self, other):
+                    return self.width == other.width and self.height == other.height
+
+            rec = Rectangle(4, 5)
+            rec1 = Rectangle(4, 5)
+            rec2 = Rectangle(2, 3)
+            print(rec)  # Rectangle(4,5)
+            print(rec1 == rec)  # True
+            print(rec2 == Rectangle(1, 3))  # False
+            ```
+
+        - Money class with arithmetic:
+          - Implements `__repr__()` to display money as `"$50"` format.
+          - Implements `__add__()` to add two Money objects and return a new Money object.
+          - Shows that `__add__` should return a new instance, not just a number.
+
+            ```python
+            class Money:
+                def __init__(self, amount):
+                    self.amount = amount
+
+                def __repr__(self):
+                    return f"${self.amount}"
+
+                def __add__(self, other):
+                    amount = self.amount + other.amount
+                    return Money(amount)
+
+            print(Money(50) + Money(30))  # $80
+            ```
