@@ -1369,3 +1369,141 @@ Roadmap to become an awesome python developer:
               print(Point(2, 3) + Point(4, 5))  # Point(6, 8)
               # Same operator +, different behavior — duck typing at work.
               ```
+
+        - Class methods (`@classmethod`):
+          - Class methods receive the class itself (`cls`) as the first parameter, not an instance (`self`).
+          - Marked with the `@classmethod` decorator.
+          - Can be called on the class or an instance: `MyClass.method()` or `instance.method()`.
+          - Commonly used as **factory methods** (alternative constructors) to create instances from external data.
+          - Can also access and modify class-level state (class attributes).
+
+          - API response to objects (factory pattern):
+            - Convert a dictionary from an API into a dataclass instance.
+            - `from_dict()` factory method parses a single dict.
+            - `from_list()` factory method applies `from_dict()` to multiple items using a list comprehension.
+            - Useful for transforming API responses into domain objects.
+
+              ```python
+              response = [
+                  {"username": "xicor", "email": "x@mail.com"},
+                  {"username": "vegeta", "email": "v@mail.com"},
+              ]
+
+              @dataclass
+              class User:
+                  username: str
+                  email: str
+
+                  @classmethod
+                  def from_dict(cls, data):
+                      return cls(data["username"], data["email"])
+
+                  @classmethod
+                  def from_list(cls, data):
+                      return [cls.from_dict(d) for d in data]
+
+                  def describe(self):
+                      return f"User = {self.username} , Email = {self.email}"
+
+              users = User.from_list(response)
+              for user in users:
+                  print(user.describe())
+              ```
+
+          - CSV line to object:
+            - Parse structured string data (like CSV lines) into dataclass instances.
+            - `from_csv_line()` splits a comma-separated string and converts types as needed.
+            - Demonstrates data transformation on the way into the object.
+
+              ```python
+              @dataclass
+              class Book:
+                  title: str
+                  author: str
+                  pages: int
+
+                  @classmethod
+                  def from_csv_line(cls, line):
+                      title, author, pages = line.split(",")
+                      pages = int(pages)
+                      return cls(title, author, pages)
+
+              book = Book.from_csv_line("Atomic Habits,James Clear,320")
+              print(book)  # Book(title='Atomic Habits', author='James Clear', pages=320)
+              ```
+
+          - Class-level counter (non-factory classmethod):
+            - Class methods aren't always factories; they can read and modify class state.
+            - Use a class attribute (shared across all instances) to track a count.
+            - Increment the counter in `__init__` each time an instance is created.
+            - Implement a `@classmethod get_count()` to return the class-level count.
+
+              ```python
+              class Employee:
+                  count = 0
+
+                  def __init__(self):
+                      Employee.count += 1
+
+                  @classmethod
+                  def get_count(cls):
+                      return cls.count
+
+              employee1 = Employee()
+              employee2 = Employee()
+              employee3 = Employee()
+
+              print(Employee.get_count())  # 3
+              ```
+
+          - Multiple factory methods (alternative constructors):
+            - A single class can have multiple factory methods for different creation patterns.
+            - `square(cls, size)` creates a rectangle with equal width and height.
+            - `from_dict(cls, data)` creates from a dictionary.
+            - Normal constructor still works for direct instantiation.
+
+              ```python
+              @dataclass
+              class Rectangle:
+                  width: float
+                  height: float
+
+                  def area(self):
+                      return self.width * self.height
+
+                  @classmethod
+                  def square(cls, size):
+                      return cls(size, size)
+
+                  @classmethod
+                  def from_dict(cls, data):
+                      return cls(data["width"], data["height"])
+
+              rectangle = Rectangle(10, 10)
+              print(rectangle.area())  # 100
+
+              square = Rectangle.square(10)
+              print(square.area())  # 100
+
+              rect_from_dict = Rectangle.from_dict({"width": 10, "height": 10})
+              print(rect_from_dict.area())  # 100
+              ```
+
+          - Factory with validation and transformation:
+            - Factories often clean and validate data before creating an object.
+            - Use factories for the "T" (Transform) step in ETL (Extract, Transform, Load) pipelines.
+            - Example: strip whitespace from strings, convert types from API responses.
+
+              ```python
+              @dataclass
+              class Product:
+                  name: str
+                  price: float
+
+                  @classmethod
+                  def from_dict(cls, data):
+                      return cls(data["name"].strip(), float(data["price"]))
+
+              product = Product.from_dict({"name": "  Widget  ", "price": "9.99"})
+              print(product)  # Product(name='Widget', price=9.99)
+              ```
