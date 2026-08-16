@@ -1284,3 +1284,88 @@ Roadmap to become an awesome python developer:
               computer = Computer("MAC", cpu, ram)
               print(computer.describe())  # A MAC has a 10 cores and 16 gigabytes.
               ```
+
+        - Polymorphism (many forms):
+          - Polymorphism allows objects of different types to respond to the same method call with different behaviors.
+          - The same method name triggers different implementations depending on the object type.
+
+          - Circle, Square, and Triangle with `area()`:
+            - Three unrelated classes, each with an `area()` method using their own formulas.
+            - A single loop calls `.area()` on each shape, producing the correct calculation for each type.
+            - Demonstrates how polymorphism enables writing generic code that works with multiple types.
+
+              ```python
+              @dataclass
+              class Circle:
+                  radius: int
+
+                  def area(self):
+                      return 3.14 * self.radius**2
+
+              @dataclass
+              class Square:
+                  side: int
+
+                  def area(self):
+                      return self.side**2
+
+              @dataclass
+              class Triangle:
+                  h: int
+                  b: int
+
+                  def area(self):
+                      return 0.5 * self.b * self.h
+
+              for instance in [Circle(5), Square(10), Triangle(10, 20)]:
+                  print(f"The area of {type(instance).__name__} is {instance.area()}")
+              ```
+
+        - Duck typing (Python's loose polymorphism):
+          - "If it walks like a duck and quacks like a duck, it's a duck."
+          - Python doesn't enforce type requirements; it only checks if an object has the required method or attribute.
+          - Functions can work with unrelated classes as long as they implement the expected interface.
+          - No inheritance or shared parent class needed — only shared method names matter.
+
+          - Book and Car with `describe()`:
+            - `Book` and `Car` are completely unrelated classes (no inheritance).
+            - Both implement a `describe()` method with different behavior.
+            - A single function `describe_all()` accepts any object with a `describe()` method.
+            - Demonstrates that polymorphism in Python is based on behavior, not type hierarchy.
+
+              ```python
+              def describe_all(items):
+                  for item in items:
+                      item.describe()
+
+              @dataclass
+              class Book:
+                  author: str
+                  title: str
+
+                  def describe(self):
+                      print(f"{self.author} : {self.title}")
+
+              @dataclass
+              class Car:
+                  brand: str
+
+                  def describe(self):
+                      print(f"The brand name of the car is {self.brand}")
+
+              describe_all([Book("A", "B"), Car("Lamborghini")])
+              ```
+
+          - Operator overloading as duck typing:
+            - When `Money(50) + Money(30)` is called, Python looks for the `__add__()` method on the left operand.
+            - Similarly, `Point(2, 3) + Point(4, 5)` calls `Point.__add__()`.
+            - Both Money and Point implement `__add__`, but they're unrelated classes.
+            - Python doesn't care about type; it just calls the method if it exists.
+            - This is polymorphism through duck typing: if the object responds to `+`, it can be added.
+
+              ```python
+              # Both classes have __add__, but they're unrelated
+              print(Money(50) + Money(30))  # $80
+              print(Point(2, 3) + Point(4, 5))  # Point(6, 8)
+              # Same operator +, different behavior — duck typing at work.
+              ```
