@@ -989,3 +989,152 @@ Roadmap to become an awesome python developer:
 
             print(Money(50) + Money(30))  # $80
             ```
+
+        - Playlist class with `__len__`:
+          - Implements `__len__()` to make the `len()` built-in function work on custom objects.
+          - Stores a list of songs and returns the count.
+
+            ```python
+            class Playlist:
+                def __init__(self, songs):
+                    self.songs = songs
+
+                def __len__(self):
+                    return len(self.songs)
+
+            playlist = Playlist(["A", "B", "C", "D"])
+            print(len(playlist))  # 4
+            ```
+
+        - Point class (2D vector):
+          - Implements `__repr__()` for readable output like `"Point(2, 3)"`.
+          - Implements `__eq__()` to compare points by their x and y coordinates.
+          - Implements `__add__()` to add two points and return a new Point with summed coordinates.
+
+            ```python
+            class Point:
+                def __init__(self, x, y):
+                    self.x = x
+                    self.y = y
+
+                def __repr__(self):
+                    return f"Point({self.x}, {self.y})"
+
+                def __eq__(self, other):
+                    return self.x == other.x and self.y == other.y
+
+                def __add__(self, other):
+                    return Point(self.x + other.x, self.y + other.y)
+
+            point = Point(2, 3)
+            point1 = Point(2, 3)
+            print(point == point1)  # True
+            print(point + point1)  # Point(4, 6)
+            ```
+
+        - Dataclasses:
+          - The `@dataclass` decorator from the `dataclasses` module automatically generates `__init__`, `__repr__`, and `__eq__` methods.
+          - Eliminates boilerplate code for simple data classes; only custom behavior methods need to be written.
+          - Uses type annotations to define fields: `field_name: type`.
+          - Supports default values for fields.
+
+          - Rectangle as a dataclass:
+            - Automatically generates `__init__` and `__repr__` without manual implementation.
+            - Custom `area()` method is still added for behavior-specific logic.
+
+              ```python
+              from dataclasses import dataclass
+
+              @dataclass
+              class Rectangle:
+                  width: int
+                  height: int
+
+                  def area(self):
+                      return self.width * self.height
+
+              rect = Rectangle(2, 3)
+              print(rect)  # Rectangle(width=2, height=3)
+              print(rect.area())  # 6
+              ```
+
+          - Money as a dataclass:
+            - Generates automatic `__init__`, `__repr__`, and `__eq__`.
+            - Custom `__add__()` method is manually implemented for arithmetic behavior.
+
+              ```python
+              @dataclass
+              class Money:
+                  amount: int
+
+                  def __add__(self, other):
+                      total_sum = self.amount + other.amount
+                      return Money(total_sum)
+
+              money = Money(100)
+              money1 = Money(110)
+              print(money)  # Money(amount=100)
+              print(money + money1)  # Money(amount=210)
+              ```
+
+          - User with default values:
+            - Fields can have default values using `field_name: type = default_value`.
+            - Allows creating instances with fewer arguments.
+
+              ```python
+              @dataclass
+              class User:
+                  name: str
+                  age: int = 0
+                  is_active: bool = True
+
+              user1 = User("Xicor")
+              print(user1)  # User(name='Xicor', age=0, is_active=True)
+
+              user2 = User("Goku", 80, True)
+              print(user2)  # User(name='Goku', age=80, is_active=True)
+              ```
+
+          - Circle dataclass:
+            - Demonstrates custom method implementation with a dataclass.
+            - `area()` method calculates the area from the radius field.
+
+              ```python
+              @dataclass
+              class Circle:
+                  radius: float
+
+                  def area(self):
+                      return 3.14159 * self.radius**2
+
+              circle = Circle(5)
+              print(circle)  # Circle(radius=5)
+              print(circle.area())  # 78.53975
+              ```
+
+          - Book dataclass:
+            - Multi-field dataclass with mixed types and default values.
+            - Automatic `__eq__()` compares all fields by value.
+            - Two books with identical field values are considered equal.
+
+              ```python
+              @dataclass
+              class Book:
+                  title: str
+                  author: str
+                  pages: int
+                  price: float = 0.0
+
+              book1 = Book("Atomic Habits", "James Clear", 100, 100)
+              book2 = Book("Eat That Frog", "Brian Tracy", 200, 200)
+              book3 = Book("Atomic Habits", "James Clear", 100, 100)
+
+              print(book1 == book2)  # False
+              print(book1 == book3)  # True
+              ```
+
+          - Summary of dataclasses:
+            - Without dataclass: must manually write `__init__`, `__repr__`, and `__eq__` for each class.
+            - With dataclass: boilerplate methods are automatically generated from type annotations.
+            - Only custom behavioral methods (like `area()`, `__add__()`) need to be implemented.
+            - Dataclass equality compares by value, not by reference, which is essential for domain objects.
