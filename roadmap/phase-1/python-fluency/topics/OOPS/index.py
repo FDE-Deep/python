@@ -253,7 +253,7 @@ print(point + point1)  # Point(4, 6)
 
 
 # data classes
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 # Rewrite Rectangle as a @dataclass with width: int and height: int.
 # Keep the area(self) method. Create one, print it, call area().
@@ -363,3 +363,151 @@ print(book1 == book3)  # True
 # With data class, the boilerplate is alreay written. Only, the behavioral methods we need to write
 # A dataclass is a decorator which we are yet to learn
 # I also dont know about ETL/RAG. # TODO need to comeback here and add a explaination once i learn
+
+
+# Inheritance basics
+
+# Write an Animal class with __init__(self, name) and a speak(self) method returning "some sound".
+# Then write a Cat(Animal) that overrides speak to return "meow". Create a Cat, call speak() and access name.
+# (Overriding = child redefines a parent method. Note: Cat needs no __init__ of its own — it inherits Animal's.)
+
+
+class Animal:
+
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return "some sound"
+
+
+class Cat(Animal):
+
+    def speak(self):
+        return "meow"
+
+
+cat = Cat("Beerus")
+print(cat.speak())  # meow  - method overriding
+
+
+# Write Vehicle with __init__(self, brand) and a describe(self) returning the brand.
+# Then Car(Vehicle) whose __init__ takes brand and doors, calls super().__init__(brand), and adds self.doors.
+# Create a Car, print brand and doors. (This is the super() case — Car defines its own __init__, so it calls the parent's to handle brand.)
+
+
+class Vehicle:
+
+    def __init__(self, brand):
+        self.brand = brand
+
+    def describe(self):
+        return self.brand
+
+
+class Car(Vehicle):  # car is a vehicle
+
+    def __init__(self, brand, doors):
+        super().__init__(brand)
+        self.doors = doors
+
+    def info(self):
+        return f"A {self.describe()} has {self.doors} doors."
+
+
+car = Car("Maruti", 4)
+print(car.info())  # A Maruti has 4 doors
+
+# I assumed it can done using data class as well and i assumed it will automatically calls super for its base class memmbers. Lets discuss about this
+
+
+@dataclass
+class Vehicle:
+    brand: str
+
+    def describe(self):
+        return self.brand
+
+
+@dataclass
+class Car(Vehicle):
+    doors: int = 0
+
+    def info(self):
+        return f"A {self.describe()} has {self.doors} doors."
+
+
+car = Car("Maruti", 4)
+print(car.info())
+
+
+# For each pair, decide inheritance or composition, write the class skeleton (just the headers — class X: or class X(Y):), and one line saying is-a or has-a:
+# a Student and a Person  A student is a person - class Student(Person) - Inheritance
+# a House and a Room     A house has a room - class House and class Room and pass room's object to house - composition
+# a Circle and a Shape    # Inheritance - A circle is a shape - class Circle(Shape)
+
+
+# Composition
+
+# Write a Book dataclass (title, author) and a Library class that holds a list of Books, with add_book(self, book) and list_books(self) methods.
+# Create a library, add two books, list them. (A Library HAS Books — composition.)
+
+
+@dataclass
+class Book:
+    title: str
+    author: str
+
+
+@dataclass
+class Library:
+    # listOfBooks: list = []  # this throws default mutable error , to fix this, we need to use default_factory
+    listOfBooks: list[Book] = field(
+        default_factory=list
+    )  # This create a fresh copy of list for each instance of Library
+
+    def add_book(self, book):
+        self.listOfBooks.append(book)
+
+    def list_books(self):
+        for book in self.listOfBooks:
+            print(f"{book.title} : {book.author}")
+
+
+book = Book("Atomic Habit", "James Clear")
+book1 = Book("Eat that Frog", "Brian Tracy")
+
+library = Library()
+library.add_book(book)
+library.add_book(book1)
+print(library.list_books())  # 2
+
+# Write a CPU dataclass (cores: int) and a RAM dataclass (size_gb: int), then a Computer class that composes both (holds a CPU object, a RAM object, and a name).
+# Give Computer a describe(self) that reports its name, cores, and RAM by reaching into its parts (self.cpu.cores, etc.).
+# Create the parts, build a Computer, print its description. (A Computer HAS a CPU and HAS RAM — pure composition, how most real domain objects are built.)
+
+
+@dataclass
+class CPU:
+    cores: int
+
+
+@dataclass
+class RAM:
+    size_gb: int
+
+
+@dataclass
+class Computer:
+    name: str
+    cpu: CPU
+    ram: RAM
+
+    def describe(self):
+        return f"A {self.name} has a {self.cpu.cores} cores and {self.ram.size_gb} gigabytes."
+
+
+cpu = CPU(10)
+ram = RAM(16)
+computer = Computer("MAC", cpu, ram)
+print(computer.describe())  # A MAC has a 10 cores and 16 gigabytes.

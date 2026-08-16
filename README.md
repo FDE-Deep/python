@@ -1138,3 +1138,149 @@ Roadmap to become an awesome python developer:
             - With dataclass: boilerplate methods are automatically generated from type annotations.
             - Only custom behavioral methods (like `area()`, `__add__()`) need to be implemented.
             - Dataclass equality compares by value, not by reference, which is essential for domain objects.
+
+        - Inheritance basics:
+          - Inheritance allows a child class to reuse and override parent class functionality.
+          - When a child class doesn't define `__init__`, it automatically inherits the parent's.
+
+          - Animal and Cat example:
+            - Parent `Animal` class with `__init__` and `speak()` method.
+            - Child `Cat` class overrides `speak()` to return "meow".
+            - Cat instances can call `speak()` (overridden) and access `name` (inherited).
+
+              ```python
+              class Animal:
+                  def __init__(self, name):
+                      self.name = name
+
+                  def speak(self):
+                      return "some sound"
+
+              class Cat(Animal):
+                  def speak(self):
+                      return "meow"
+
+              cat = Cat("Beerus")
+              print(cat.speak())  # meow (method overriding)
+              ```
+
+          - Vehicle and Car with `super()`:
+            - When a child class has its own `__init__`, use `super().__init__()` to call the parent's initialization.
+            - This allows the parent to set up inherited attributes while the child adds its own.
+
+              ```python
+              class Vehicle:
+                  def __init__(self, brand):
+                      self.brand = brand
+
+                  def describe(self):
+                      return self.brand
+
+              class Car(Vehicle):
+                  def __init__(self, brand, doors):
+                      super().__init__(brand)
+                      self.doors = doors
+
+                  def info(self):
+                      return f"A {self.describe()} has {self.doors} doors."
+
+              car = Car("Maruti", 4)
+              print(car.info())  # A Maruti has 4 doors
+              ```
+
+          - Inheritance with dataclasses:
+            - Child dataclass automatically inherits parent's fields and can add its own.
+            - No need for `super()` call in `__init__` — dataclass handles field initialization.
+            - Parent and child fields are combined in the auto-generated `__init__`.
+
+              ```python
+              @dataclass
+              class Vehicle:
+                  brand: str
+
+                  def describe(self):
+                      return self.brand
+
+              @dataclass
+              class Car(Vehicle):
+                  doors: int = 0
+
+                  def info(self):
+                      return f"A {self.describe()} has {self.doors} doors."
+
+              car = Car("Maruti", 4)
+              print(car.info())  # A Maruti has 4 doors
+              ```
+
+          - Inheritance vs Composition decision:
+            - **Inheritance (is-a)**: Use when a child is a specific type of parent.
+              - Example: `Student` is a `Person` → `class Student(Person)`
+              - Example: `Circle` is a `Shape` → `class Circle(Shape)`
+            - **Composition (has-a)**: Use when an object contains or uses another object.
+              - Example: `House` has `Room` objects → create both classes separately, pass Room to House
+              - Example: `Library` has `Book` objects → Library contains a list of Books
+
+        - Composition examples:
+          - Composition allows objects to be built by combining simpler objects.
+
+          - Book and Library:
+            - `Book` dataclass holds title and author.
+            - `Library` dataclass contains a list of `Book` objects.
+            - Uses `field(default_factory=list)` to avoid mutable default argument issues.
+            - Library provides methods to add and list books.
+
+              ```python
+              @dataclass
+              class Book:
+                  title: str
+                  author: str
+
+              @dataclass
+              class Library:
+                  listOfBooks: list[Book] = field(default_factory=list)
+
+                  def add_book(self, book):
+                      self.listOfBooks.append(book)
+
+                  def list_books(self):
+                      for book in self.listOfBooks:
+                          print(f"{book.title} : {book.author}")
+
+              book = Book("Atomic Habits", "James Clear")
+              book1 = Book("Eat That Frog", "Brian Tracy")
+
+              library = Library()
+              library.add_book(book)
+              library.add_book(book1)
+              library.list_books()
+              ```
+
+          - CPU, RAM, and Computer:
+            - Demonstrates composition of multiple objects with different types.
+            - `Computer` dataclass composes both `CPU` and `RAM` objects, plus a name.
+            - `describe()` method accesses nested attributes via composition (e.g., `self.cpu.cores`).
+            - Shows how complex domain objects are built from simpler, reusable pieces.
+
+              ```python
+              @dataclass
+              class CPU:
+                  cores: int
+
+              @dataclass
+              class RAM:
+                  size_gb: int
+
+              @dataclass
+              class Computer:
+                  name: str
+                  cpu: CPU
+                  ram: RAM
+
+                  def describe(self):
+                      return f"A {self.name} has a {self.cpu.cores} cores and {self.ram.size_gb} gigabytes."
+
+              cpu = CPU(10)
+              ram = RAM(16)
+              computer = Computer("MAC", cpu, ram)
+              print(computer.describe())  # A MAC has a 10 cores and 16 gigabytes.
+              ```
