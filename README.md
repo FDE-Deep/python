@@ -1507,3 +1507,169 @@ Roadmap to become an awesome python developer:
               product = Product.from_dict({"name": "  Widget  ", "price": "9.99"})
               print(product)  # Product(name='Widget', price=9.99)
               ```
+
+        - Encapsulation:
+          - Encapsulation is about protecting data by keeping it and methods together in a class and controlling how they are accessed.
+          - Prevents accidental or unauthorized modification of data.
+          - Python uses **naming conventions** and **properties** to implement encapsulation.
+
+          - Naming convention (`_prefix`):
+            - Using a single underscore (`_variable`) signals to other developers "don't modify this directly."
+            - Python doesn't enforce this — it's a convention, not a restriction.
+            - Still allows external modification, but signals intent.
+
+              ```python
+              @dataclass
+              class Example:
+                  data: str
+
+              e = Example("Data")
+              print(e)  # Example(data='Data')
+
+              # Direct modification is still possible but discouraged
+              e.data = "directly modified"
+              print(e)  # Example(data='directly modified')
+              ```
+
+          - Properties with `@property`:
+            - The `@property` decorator allows accessing a method as if it were an attribute (no parentheses).
+            - Computed values can be accessed like simple attributes.
+            - Provides a read-only interface by default (no setter).
+
+              ```python
+              @dataclass
+              class Rectangle:
+                  h: float
+                  b: float
+
+                  @property
+                  def _area(self):
+                      return self.h * self.b
+
+              r = Rectangle(100, 100)
+              print(r._area)  # 10000
+              # r._area = 5000  # AttributeError: property '_area' has no setter (read-only)
+              ```
+
+          - Rectangle with `@property` area:
+            - Stores width and height with underscore prefix.
+            - `@property area` returns the computed area as a read-only attribute.
+            - No setter means `rect.area = ...` raises an error.
+
+              ```python
+              class Rectangle:
+                  def __init__(self, h, w):
+                      self._h = h
+                      self._w = w
+
+                  @property
+                  def area(self):
+                      return self._h * self._w
+
+              r = Rectangle(100, 100)
+              print(r.area)  # 10000
+              ```
+
+          - Circle with read-only property:
+            - Stores radius as `_radius`.
+            - `@property radius` getter allows reading the radius.
+            - No setter means attempting `circle.radius = 10` raises `AttributeError`.
+
+              ```python
+              @dataclass
+              class Circle:
+                  radius_field: float
+
+                  @property
+                  def radius(self):
+                      return self.radius_field
+
+              circle = Circle(10)
+              print(circle.radius)  # 10
+              # circle.radius = 100  # AttributeError: property 'radius' has no setter
+              ```
+
+          - Temperature with validation setter:
+            - Stores temperature as `_celsius`.
+            - `@property celsius` getter returns the internal value.
+            - `@celsius.setter` validates that new values don't violate absolute zero (-273.15).
+            - Invalid assignments raise `ValueError`, preventing bad state.
+
+              ```python
+              @dataclass
+              class Temperature:
+                  celsius_field: float
+
+                  @property
+                  def celsius(self):
+                      return self.celsius_field
+
+                  @celsius.setter
+                  def celsius(self, new_value):
+                      if new_value < -273.15:
+                          raise ValueError("Invalid Input: Must be -273.15 or above")
+                      self.celsius_field = new_value
+
+              temp = Temperature(10)
+              print(temp.celsius)  # 10
+              # temp.celsius = -274  # ValueError: Invalid Input...
+              ```
+
+          - Person with computed property:
+            - Stores first and last names separately.
+            - `@property full_name` computes and returns the full name on access.
+            - Derived property: not stored, computed each time it's accessed.
+
+              ```python
+              class Person:
+                  def __init__(self, first_name, last_name):
+                      self._first = first_name
+                      self._last = last_name
+
+                  @property
+                  def full_name(self):
+                      return f"{self._first} {self._last}"
+
+              person = Person("Deep", "Singh")
+              print(person.full_name)  # Deep Singh
+              ```
+
+          - BankAccount with validated balance:
+            - Stores balance as `_balance`.
+            - `@property balance` getter returns the current balance.
+            - `@balance.setter` rejects negative values, ensuring the account can never go negative.
+            - `deposit()` method uses the setter, so all modifications go through validation.
+            - Demonstrates how encapsulation prevents bypassing validation.
+
+              ```python
+              @dataclass
+              class BankAccount:
+                  balance_field: float
+
+                  @property
+                  def balance(self):
+                      return self.balance_field
+
+                  @balance.setter
+                  def balance(self, new_value):
+                      if new_value < 0:
+                          raise ValueError("Balance cannot be less than 0")
+                      self.balance_field = new_value
+
+                  def deposit(self, amount):
+                      self.balance = self.balance + amount
+
+              account = BankAccount(100)
+              print(account.balance)  # 100
+              account.deposit(100)
+              print(account.balance)  # 200
+              # account.balance = -100  # ValueError: Balance cannot be less than 0
+              # account.deposit(-101)  # ValueError: Balance cannot be less than 0
+              ```
+
+          - Summary of encapsulation:
+            - **Naming convention (`_field`)**: Signals intent that a field should not be modified directly.
+            - **Read-only `@property`**: Getter without setter makes data read-only.
+            - **Computed properties**: Return derived values on access without storing them.
+            - **Validated setters**: Control and validate all modifications to ensure valid state.
+            - **Core benefit**: Prevents invalid state and forces all changes through controlled paths.
