@@ -1,0 +1,3 @@
+[submodule "projects/word-analyzer"]
+	path = projects/word-analyzer
+	url = https://github.com/FDE-Deep/word-analyzer.git
