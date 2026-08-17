@@ -1,3 +1,7 @@
 [submodule "projects/word-analyzer"]
 	path = projects/word-analyzer
 	url = https://github.com/FDE-Deep/word-analyzer.git
+
+[submodule "projects/library-system"]
+	path = projects/library-system
+	url = https://github.com/FDE-Deep/library-system.git
