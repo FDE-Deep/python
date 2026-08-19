@@ -14,6 +14,7 @@ A structured, self-paced curriculum for building Python fluency — from core da
   - [Functions](#functions)
   - [Control Flow](#control-flow)
   - [Object-Oriented Programming](#object-oriented-programming)
+  - [Exception Handling](#exception-handling)
   - [Foundations](#foundations)
 - [Data Structure Complexity Cheatsheet](#data-structure-complexity-cheatsheet)
 - [Projects](#projects)
@@ -29,6 +30,7 @@ Topics build in roughly this order:
 3. **Functions** — variadic arguments, closures, common pitfalls
 4. **Control flow** — conditionals, loops, iteration protocol
 5. **Object-oriented programming** — classes through abstract base classes
+6. **Exception handling** — try/except/else/finally, raising and defining custom exceptions
 
 ## Repository Structure
 
@@ -75,6 +77,7 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 | OOP: class methods, factory patterns | ✅ Complete | `topics/OOPS/` |
 | OOP: encapsulation, properties | ✅ Complete | `topics/OOPS/` |
 | OOP: abstract base classes | ✅ Complete | `topics/OOPS/` |
+| Exception handling: try/except/else/finally, custom exceptions | ✅ Complete | `topics/exception-handling/` |
 
 ## Reference
 
@@ -362,6 +365,40 @@ class Shape(ABC):
 
     def describe(self):
         return f"Area: {self.area()}"   # concrete method, shared by all subclasses
+```
+
+### Exception Handling
+
+`topics/exception-handling/index.py`
+
+Covers the `try`/`except`/`else`/`finally` machinery, catching built-in exceptions by type, raising custom exceptions, and the ordering rules that govern which block runs when.
+
+- **Basic `try`/`except`** — catching `ZeroDivisionError` and `KeyError`, returning a fallback instead of crashing.
+- **Multiple `except` blocks** — matching different exception types (`ValueError` vs `ZeroDivisionError`) to different messages; the first matching block wins.
+- **`raise`** — raising a built-in exception (`ValueError`) with a custom message from inside a validation function, then catching it at the call site with `except ValueError as e`.
+- **`finally`** — always runs, whether the `try` succeeded, raised, or returned — including printing after a `return` from inside the `try`.
+- **`else`** — runs only if the `try` block completes with no exception *and* reaches its own end. A `return` inside `try` exits the function immediately and skips `else` entirely, since `else` fires on falling off the end of `try`, not on success as such.
+- **Custom exceptions** — defining `class NegativeNumberError(Exception): pass` and raising/catching it exactly like a built-in.
+- **Combining it all** — a `withdraw(balance, amount)` example with two custom-ish exception types (`InsufficientFundsError`, `ValueError`) caught in separate `except` clauses, with a shared `else` for the success path.
+
+```python
+def parse_number(text):
+    try:
+        value = int(text)
+    except ValueError:
+        return "not a number"
+    else:
+        return f"successfully parsed {value}"   # only reached if try raised nothing
+```
+
+```python
+class NegativeNumberError(Exception):
+    pass
+
+def sqrt_check(n):
+    if n < 0:
+        raise NegativeNumberError("n must be greater than zero")
+    return n ** 0.5
 ```
 
 ### Foundations
