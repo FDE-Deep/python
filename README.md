@@ -15,6 +15,7 @@ A structured, self-paced curriculum for building Python fluency — from core da
   - [Control Flow](#control-flow)
   - [Object-Oriented Programming](#object-oriented-programming)
   - [Exception Handling](#exception-handling)
+  - [Context Managers](#context-managers)
   - [Foundations](#foundations)
 - [Data Structure Complexity Cheatsheet](#data-structure-complexity-cheatsheet)
 - [Projects](#projects)
@@ -31,6 +32,7 @@ Topics build in roughly this order:
 4. **Control flow** — conditionals, loops, iteration protocol
 5. **Object-oriented programming** — classes through abstract base classes
 6. **Exception handling** — try/except/else/finally, raising and defining custom exceptions
+7. **Context managers** — `__enter__`/`__exit__`, guaranteed cleanup, the `@contextmanager` generator form
 
 ## Repository Structure
 
@@ -78,6 +80,7 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 | OOP: encapsulation, properties | ✅ Complete | `topics/OOPS/` |
 | OOP: abstract base classes | ✅ Complete | `topics/OOPS/` |
 | Exception handling: try/except/else/finally, custom exceptions | ✅ Complete | `topics/exception-handling/` |
+| Context managers: `__enter__`/`__exit__`, `@contextmanager` | ✅ Complete | `topics/context-manager/` |
 
 ## Reference
 
@@ -399,6 +402,46 @@ def sqrt_check(n):
     if n < 0:
         raise NegativeNumberError("n must be greater than zero")
     return n ** 0.5
+```
+
+### Context Managers
+
+`topics/context-manager/index.py`
+
+Covers the `with` statement's protocol — `__enter__`/`__exit__` on a class, then the same thing written as a generator with `@contextmanager` — and the property that makes context managers useful: cleanup runs even when the block raises.
+
+- **The enter → block → exit sequence** — a class with `__enter__` (prints, returns `self`) and `__exit__` (prints); `with Greeter() as greet:` traces the order setup and teardown fire relative to the block body.
+- **`as` binds whatever `__enter__` returns** — `__enter__` can return anything (`self`, a string, a connection object); `with X() as v:` just captures that return value.
+- **Cleanup runs even on error** — `__exit__` still fires if the block raises; the exception only propagates *after* `__exit__` returns (unless `__exit__` itself returns a truthy value to suppress it). Same guarantee as `finally`.
+- **A practical example (`Timer`)** — `__enter__` records a start time, `__exit__` computes and prints elapsed time; a real, reusable measurement tool built from the protocol.
+- **`@contextmanager`** — from `contextlib`, turns a generator function into a context manager without writing a class: code before `yield` is `__enter__`, the yielded value is what `as` binds, code after `yield` is `__exit__`.
+- **Guaranteed cleanup in the generator form** — a bare `yield` skips the post-`yield` cleanup entirely if the block raises, since an unhandled exception propagates out of the generator at the `yield` point; wrapping the `yield` in `try`/`finally` is what makes cleanup run unconditionally, mirroring `__exit__`'s guarantee in the class form.
+
+```python
+class Timer:
+    def __enter__(self):
+        self.start = time.time()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        print(f"Elapsed Time - {time.time() - self.start} seconds")
+
+with Timer():
+    total = sum(range(1_000_000))
+```
+
+```python
+from contextlib import contextmanager
+
+@contextmanager
+def guard():
+    print("acquired")
+    try:
+        yield
+    finally:
+        print("released")   # runs even if the with-block raises
+
+with guard():
+    raise ValueError("boom")   # "released" still prints before this propagates
 ```
 
 ### Foundations
