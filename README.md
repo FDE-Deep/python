@@ -16,6 +16,7 @@ A structured, self-paced curriculum for building Python fluency — from core da
   - [Object-Oriented Programming](#object-oriented-programming)
   - [Exception Handling](#exception-handling)
   - [Context Managers](#context-managers)
+  - [Type Hints](#type-hints)
   - [Foundations](#foundations)
 - [Data Structure Complexity Cheatsheet](#data-structure-complexity-cheatsheet)
 - [Projects](#projects)
@@ -33,6 +34,8 @@ Topics build in roughly this order:
 5. **Object-oriented programming** — classes through abstract base classes
 6. **Exception handling** — try/except/else/finally, raising and defining custom exceptions
 7. **Context managers** — `__enter__`/`__exit__`, guaranteed cleanup, the `@contextmanager` generator form
+8. **Type hints** — annotating variables, containers, classes, and functions; checked by Pylance/mypy, not the interpreter
+9. **Interview practice** — mixed-topic recall drills revisiting gaps found across all of the above
 
 ## Repository Structure
 
@@ -44,7 +47,8 @@ python/
 │           ├── topics/            # concept write-ups + exercises, one file per topic
 │           │   └── OOPS/          # object-oriented programming, one file per concept
 │           ├── exercise/          # focused drills (comprehensions)
-│           └── facts/             # short, single-concept deep dives
+│           ├── facts/             # short, single-concept deep dives
+│           └── interview-practice/ # mixed-topic recall drills, one file revisiting gaps across all topics
 ├── basics/                        # earliest exercises (pre-roadmap), superseded by roadmap/
 ├── oop/                           # earliest OOP exercises, superseded by roadmap/topics/OOPS/
 └── projects/                      # applied, standalone projects
@@ -81,6 +85,8 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 | OOP: abstract base classes | ✅ Complete | `topics/OOPS/` |
 | Exception handling: try/except/else/finally, custom exceptions | ✅ Complete | `topics/exception-handling/` |
 | Context managers: `__enter__`/`__exit__`, `@contextmanager` | ✅ Complete | `topics/context-manager/` |
+| Type hints: variables, containers, classes, functions | ✅ Complete | `topics/type-hint/` |
+| Interview practice: mixed-topic recall drills | ✅ Complete | `interview-practice/` |
 
 ## Reference
 
@@ -442,6 +448,54 @@ def guard():
 
 with guard():
     raise ValueError("boom")   # "released" still prints before this propagates
+```
+
+### Type Hints
+
+`topics/type-hint/index.py`
+
+Covers Python's optional type annotation syntax — `name: Type` for variables/parameters, `-> Type` for return values — and the key distinction that hints are a **static-analysis aid, not a runtime check**: Pylance/mypy flag a mismatched call in the editor, but the code still executes normally if run.
+
+- **Basic types** — `stringType: str`, `intType: int`, `booleanType: bool`, `decimalType: float`.
+- **Container types** — generic subscripting: `list[str]`, `list[int]`, `dict[str, int]`, `set[int]`.
+- **Class types** — a variable annotated with a custom class: `b: Book = Book()`.
+- **Function signatures** — parameter and return annotations together: `def add(a: int, b: int) -> int`.
+- **Union types** — a parameter accepting more than one type via `|`: `def add1(a: int | str, b: int | str) -> int`.
+- **Annotate = attach a hint** — "annotate `total(nums)`" just means writing out its `: Type`/`-> Type` syntax, same mechanics as the examples above, for a list-of-ints parameter, a `dict[str, float]` variable, and a function returning `list[Book]`.
+- **Annotating existing methods** — retrofitting `Library.add_item`/`borrow_item` from the OOP topics with full parameter and return types, including the judgment call of picking one consistent id type (`str`) after the project had used both strings and ints for ids inconsistently.
+
+```python
+def find_item(name: str, items: dict[str, int]) -> int | None:
+    return items.get(name)
+
+class Library:
+    def add_item(self, item: LibraryItem) -> None: ...
+    def borrow_item(self, member_id: str, item_id: str) -> None: ...
+```
+
+### Interview Practice
+
+`interview-practice/index.py`
+
+A single file of mixed-topic recall drills, written after the fact to close specific gaps surfaced by an earlier interview-style Q&A — each drill traces execution by hand before running it, rather than just reading the answer. Not a new topic; it revisits closures, inheritance, context managers, generators, comprehensions, properties, custom exceptions, and type hints from the sections above, plus ten general prediction questions.
+
+- **Closure late binding** — a loop appending `lambda: i` to a list; all three calls return `2`, because the lambdas share one cell holding `i` by reference, read only when called (after the loop has finished), not a fresh `i` per iteration — the same "shared reference, not a snapshot" trap as a mutable default argument.
+- **`super()` gap** — `B.__init__` calls `super().__init__(x)` and gets `self.x`; `C.__init__` skips it, so `c.x` raises `AttributeError` — the parent's `__init__` (and whatever it sets) only runs if a subclass's `__init__` explicitly calls it.
+- **Context-manager exception suppression** — `__exit__` returning `None` (the implicit default, no `return` statement) is falsy, so the exception is **not** suppressed: `"cleanup"` prints, then the exception propagates and `"after"` never prints. Only an explicit truthy `return` from `__exit__` swallows it.
+- **Generator resume points** — tracing exactly which `print`s run for a given number of `next()` calls, precise to the paused line: a generator resumes right after the last `yield` and runs up to (and including) the next one.
+- **MRO recall** — `class Child(Left, Right)` where both override a `Base` method: `c.greet()` returns `"Left"`, and `Child.__mro__` is `Child → Left → Right → Base → object` (child first, parents left-to-right, common base last).
+- **`@property` vs direct attribute access** — `a.balance = 50` goes through the setter (validated); `a._balance = -999` bypasses it by writing the backing field directly — Python's privacy is convention, not enforcement, so a property doesn't protect against reaching past it.
+- **Custom exception + `except` order** — `except TooSmallError` before `except Exception` is what lets the specific message print; swapping the order makes the broader `Exception` clause catch it first and the specific handler never runs, since Python tries `except` clauses top-to-bottom and stops at the first match.
+- **`@contextmanager` without `try`/`finally`** — confirms the same gotcha from the [Context Managers](#context-managers) topic: a bare `yield` (no `try`/`finally`) means an exception in the `with` body skips the post-`yield` cleanup entirely instead of guaranteeing it.
+- **Type hints don't stop runtime errors** — `process(data: list[int])` called with a string still runs and crashes with a `TypeError` inside the loop; Pylance/mypy would flag the call as a static error, but nothing stops it at runtime — hints are advisory, not enforced.
+- **`dict.get` vs `[]`** — iterating a dict yields keys; `.items()` yields key/value pairs; `.get("z", 0)` returns the default for a missing key, while `data["z"]` raises `KeyError` — the same lookup, two different failure behaviors.
+
+```python
+funcs = []
+for i in range(3):
+    funcs.append(lambda: i)
+
+print(funcs[0]())  # 2 — all three share the same `i`, read at call time, after the loop ends
 ```
 
 ### Foundations
