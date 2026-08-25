@@ -17,6 +17,8 @@ A structured, self-paced curriculum for building Python fluency — from core da
   - [Exception Handling](#exception-handling)
   - [Context Managers](#context-managers)
   - [Type Hints](#type-hints)
+  - [Interview Practice](#interview-practice)
+  - [Decorators](#decorators)
   - [Foundations](#foundations)
 - [Data Structure Complexity Cheatsheet](#data-structure-complexity-cheatsheet)
 - [Projects](#projects)
@@ -36,6 +38,7 @@ Topics build in roughly this order:
 7. **Context managers** — `__enter__`/`__exit__`, guaranteed cleanup, the `@contextmanager` generator form
 8. **Type hints** — annotating variables, containers, classes, and functions; checked by Pylance/mypy, not the interpreter
 9. **Interview practice** — mixed-topic recall drills revisiting gaps found across all of the above
+10. **Decorators** *(new track: Python Advanced + API)* — closures wrapping functions, `@wraps`, and real-world patterns like timing and retry
 
 ## Repository Structure
 
@@ -49,6 +52,8 @@ python/
 │           ├── exercise/          # focused drills (comprehensions)
 │           ├── facts/             # short, single-concept deep dives
 │           └── interview-practice/ # mixed-topic recall drills, one file revisiting gaps across all topics
+│       └── python-advanced-plus-api/
+│           └── topics/            # concept write-ups + exercises, one file per topic (decorators, …)
 ├── basics/                        # earliest exercises (pre-roadmap), superseded by roadmap/
 ├── oop/                           # earliest OOP exercises, superseded by roadmap/topics/OOPS/
 └── projects/                      # applied, standalone projects
@@ -88,9 +93,15 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 | Type hints: variables, containers, classes, functions | ✅ Complete | `topics/type-hint/` |
 | Interview practice: mixed-topic recall drills | ✅ Complete | `interview-practice/` |
 
+### Phase 1 — Python Advanced + API
+
+| Track | Status | Location |
+|---|---|---|
+| Decorators: closures, `@wraps`, timing/retry patterns | 🚧 In progress | `python-advanced-plus-api/topics/decorators/` |
+
 ## Reference
 
-Each entry below documents a single file: what it covers, the concepts it introduces, and a representative example. File paths are relative to `roadmap/phase-1/python-fluency/`.
+Each entry below documents a single file: what it covers, the concepts it introduces, and a representative example. File paths are relative to `roadmap/phase-1/python-fluency/`, except where noted with a full path.
 
 ### Data Types
 
@@ -496,6 +507,37 @@ for i in range(3):
     funcs.append(lambda: i)
 
 print(funcs[0]())  # 2 — all three share the same `i`, read at call time, after the loop ends
+```
+
+### Decorators
+
+`roadmap/phase-1/python-advanced-plus-api/topics/decorators/index.py`
+
+Opens a new track (Python Advanced + API) with `@decorator` syntax: a decorator is a closure that wraps a function and returns the wrapped version, and `@func` above a `def` is sugar for `thing = decorator(thing)`.
+
+- **The basic mechanism** — `my_decorator(func)` defines an inner `wrapper(*args, **kwargs)` that calls `func`, adding behavior before/after, and returns `wrapper`; applying it (`add = my_decorator(add)` or `@my_decorator`) rebinds the name to the wrapper, not the original function.
+- **The lost-identity gotcha** — after decorating, `multiply.__name__` prints `"wrapper"`, not `"multiply"` — decorating reassigns the name to the wrapper object, which carries its own `__name__`/`__doc__`; the original function is only reachable through the wrapper's closure, not the outer name.
+- **`functools.wraps`** — `@wraps(func)` on the inner `wrapper` copies `func`'s metadata (`__name__`, `__doc__`, etc.) onto the wrapper, fixing the gotcha above so `subtract.__name__` correctly reports `"subtract"`.
+- **A decorator with behavior** (`announce`) — prints before/after messages using `func.__name__` for context, then returns the result unchanged — the side-effect-only decorator pattern.
+- **A decorator that changes the result** (`double_result`) — calls the function and returns a transformed value (`result * 2`) instead of the original — decorators aren't limited to side effects; they can rewrite what the caller gets back.
+- **`@timer`** — records a start time in the wrapper, calls the function, computes elapsed time from the difference, prints it, and still returns the original result — the general "measure around a call" shape, reused from the `Timer` context manager topic but as a decorator instead of a `with` block.
+- **`@retry`** *(in progress)* — the next exercise: retry a call up to 3 times, catching and logging each failed attempt, re-raising the last exception only if every attempt fails.
+
+```python
+from functools import wraps
+
+def timer(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} took {time.time() - start}")
+        return result
+    return wrapper
+
+@timer
+def total_sum(n):
+    return sum(i for i in range(n))
 ```
 
 ### Foundations
