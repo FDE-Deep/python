@@ -178,7 +178,7 @@ def timer(func):
         start_time = time.time()
         result = func(*args, **kwargs)
         elapsed = time.time() - start_time
-        print(f"{func.__name__} took {elapsed}")
+        print(f"{func.__name__} took {elapsed:.4f}")
         return result
 
     return wrapper
@@ -197,3 +197,223 @@ print(
 # 5 — @retry (the real-world one)
 
 # Write retry: the wrapper tries to call the function up to 3 times. On each attempt, try to call it and return the result immediately on success. If it raises, catch the exception, print something like "attempt <n> failed: <error>", and loop to try again. If all 3 attempts fail, re-raise the last exception (don't swallow it silently).
+
+
+def retry(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        attempts = 3
+        for attempt in range(1, attempts + 1):
+            try:
+                return func(*args, **kwargs)
+            except ValueError as e:
+                print(f"Attempt {attempt} failed: {e}")
+                if attempt == attempts:
+                    raise
+
+    return wrapper
+
+
+@retry
+def countNumbers(item):
+    if len(item) < 5:
+        raise ValueError("Length of list is less then 5")
+    return len(item)
+
+
+# countNumbers([1, 2, 3])
+print(countNumbers([1, 2, 3, 4, 5, 6]))  # 6
+
+# output:
+
+# Attempt 1 failed: Length of list is less then 5
+# Attempt 2 failed: Length of list is less then 5
+# Attempt 3 failed: Length of list is less then 5
+
+# A decorator can accept arugments as well. But then it adds a one more layer.
+
+# For example:
+
+
+def multiplier(n=1):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            return [x * n for x in result]
+
+        return wrapper
+
+    return decorator
+
+
+def generateList(n):
+    return [i for i in range(n)]
+
+
+decorator = multiplier(2)
+print(decorator)  # <function multiplier.<locals>.decorator at 0x000001B3774328D0>
+wrapper = decorator(generateList)
+print(
+    wrapper
+)  # <function multiplier.<locals>.decorator.<locals>.wrapper at 0x00000234302F2980>
+print(wrapper(5))  # [0, 2, 4, 6, 8]
+
+generateList = multiplier(2)(generateList)
+print(generateList(4))
+
+
+@multiplier(2)
+def createList(n):
+    return [i for i in range(n)]
+
+
+print(createList(10))
+# Practice
+
+# 1 — Configurable @retry
+# Rewrite your @retry to take an attempts argument (default 3), using the three-layer structure. Test it with @retry(attempts=2) on a function that always fails — confirm it tries exactly 2 times then raises. Then @retry(attempts=4) — confirm 4 attempts.
+
+
+def retryCalls(attempts=1):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except ValueError as e:
+                    print(f"Attempt : {attempt} failed - {e}")
+                    if attempt == attempts:
+                        raise
+
+        return wrapper
+
+    return decorator
+
+
+@retryCalls(2)
+def justTestRetry(value):
+    if value != "test":
+        raise ValueError("Value doesnt match")
+    return value
+
+
+@retryCalls(4)
+def justTestRetryattempt4(value):
+    if value != "test":
+        raise ValueError("Value doesnt match")
+    return value
+
+
+try:
+    print(justTestRetry("tt"))
+except ValueError as e:
+    print("Failed after all attempts")
+
+# output -
+
+# Attempt : 1 failed - Value doesnt match
+# Attempt : 2 failed - Value doesnt match
+# Failed after all attempts
+try:
+    print(justTestRetryattempt4("tt"))
+except ValueError as e:
+    print("Failed after all attempts")
+
+# output -
+
+# Attempt : 1 failed - Value doesnt match
+# Attempt : 2 failed - Value doesnt match
+# Attempt : 3 failed - Value doesnt match
+# Attempt : 4 failed - Value doesnt match
+# Failed after all attempts
+
+
+# 2 — Add a configurable exception type
+# Extend it: retry(attempts=3, exceptions=ValueError) — so the caller specifies which exception(s) to retry on. Use except exceptions as e: (you can pass a single exception type or a tuple). Test @retry(attempts=2, exceptions=KeyError) on a function that raises KeyError, and confirm it retries; then confirm a different exception (say ValueError) is not retried (propagates immediately, because it's not in the caught types).
+
+
+def retryOnlyValidException(attempts, exceptions):
+    def decorator(func):
+        @wraps(func)  # fixed. when will i stop doing sill mistakes
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except exceptions as e:
+                    print(f"Attempt - {attempt} faile : {e}")
+                    if attempt == attempts:
+                        raise
+
+        return wrapper
+
+    return decorator
+
+
+@retryOnlyValidException(4, KeyError)
+def hasKey(data, key):
+    if data.get(key) == None:
+        raise KeyError(f"key : {key} is not present")
+    return data.get(key)
+
+
+data = {"name": "Deep"}
+
+try:
+    print(hasKey(data, "date"))
+except KeyError as e:
+    print("Failed after all attempts")
+
+# output -
+
+# Attempt - 1 faile : 'key : date is not present'
+# Attempt - 2 faile : 'key : date is not present'
+# Attempt - 3 faile : 'key : date is not present'
+# Attempt - 4 faile : 'key : date is not present'
+# Failed after all attempts
+
+
+@retryOnlyValidException(4, KeyError)
+def hasValue(data, key):
+    if data.get(key) == None:  # fixed , silly mistake here as well
+        raise ValueError(f"key : {key} is not present")
+    return data.get(key)
+
+
+try:
+    print(hasValue(data, "date"))
+except ValueError as e:
+    print(
+        "Didnt attempt because the exception doesnt match in decorator. So, function execution stops."
+    )
+
+# output - Didnt attempt because the exception doesnt match in decorator. So, function execution stops.
+
+
+# 3 — A @repeat(n) decorator
+# Simpler one to reinforce the pattern: write @repeat(n) that runs the decorated function n times (printing each result, or collecting them). @repeat(3) on a function that prints "hi" should print it 3 times. This is pure three-layer practice without the retry complexity.
+
+
+def repeat(n):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            return [func(*args, **kwargs) for _ in range(n)]
+
+        return wrapper
+
+    return decorator
+
+
+@repeat(3)
+def hi():
+    return "hi"
+
+
+hi()
+
+# output:
+# hi
+# hi
+# hi
