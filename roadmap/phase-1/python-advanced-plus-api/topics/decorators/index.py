@@ -342,7 +342,7 @@ def retryOnlyValidException(attempts, exceptions):
                 try:
                     return func(*args, **kwargs)
                 except exceptions as e:
-                    print(f"Attempt - {attempt} faile : {e}")
+                    print(f"Attempt - {attempt} failed : {e}")
                     if attempt == attempts:
                         raise
 
@@ -417,3 +417,52 @@ hi()
 # hi
 # hi
 # hi
+
+
+# Rate Limit - Time Delay
+
+
+def retryWithDelayAndBackOff(attempts=1, delay=1, backoff=2):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            current_delay = delay
+            for attempt in range(1, attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f"{e}")
+                    if attempt == attempts:
+                        raise
+                    print(f"Retry after {current_delay} seconds ...")
+                    time.sleep(current_delay)
+                    current_delay *= backoff
+
+        return wrapper
+
+    return decorator
+
+
+call_count = {"n": 0}
+
+
+@retryWithDelayAndBackOff(attempts=5, delay=1, backoff=2)
+def testFlakyApi():
+    call_count["n"] += 1
+    if call_count.get("n", 0) < 3:
+        raise ValueError(f"Rate Limited : attempt {call_count["n"]} failed")
+    print("Successful ..........")
+
+
+testFlakyApi()
+
+# Dry Run:
+
+# For each attempt, the wrapper calls the testFlakyApi function
+# It checks , if call_count["n"] < 5
+# Yes, raise the exception
+# Then exception is caught for each attempt
+# And we delay it by current_delay
+# And update the current_delay for next attempt using backoff
+
+# And for each attempt after current delay , it will call the function again and see if it raises the exception or gets successful.
