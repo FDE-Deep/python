@@ -19,6 +19,7 @@ A structured, self-paced curriculum for building Python fluency — from core da
   - [Type Hints](#type-hints)
   - [Interview Practice](#interview-practice)
   - [Decorators](#decorators)
+  - [Itertools](#itertools)
   - [Foundations](#foundations)
 - [Data Structure Complexity Cheatsheet](#data-structure-complexity-cheatsheet)
 - [Projects](#projects)
@@ -39,6 +40,7 @@ Topics build in roughly this order:
 8. **Type hints** — annotating variables, containers, classes, and functions; checked by Pylance/mypy, not the interpreter
 9. **Interview practice** — mixed-topic recall drills revisiting gaps found across all of the above
 10. **Decorators** *(new track: Python Advanced + API)* — closures wrapping functions, `@wraps`, and real-world patterns like timing and retry
+11. **Itertools** — lazy iterator-building tools: `islice`, `chain`, `groupby`, `batched`
 
 ## Repository Structure
 
@@ -53,7 +55,8 @@ python/
 │           ├── facts/             # short, single-concept deep dives
 │           └── interview-practice/ # mixed-topic recall drills, one file revisiting gaps across all topics
 │       └── python-advanced-plus-api/
-│           └── topics/            # concept write-ups + exercises, one file per topic (decorators, …)
+│           └── topics/            # concept write-ups + exercises, one file per topic
+│               └── itertools/     # one file per itertools function (islice, chain, groupBy, batched)
 ├── basics/                        # earliest exercises (pre-roadmap), superseded by roadmap/
 ├── oop/                           # earliest OOP exercises, superseded by roadmap/topics/OOPS/
 └── projects/                      # applied, standalone projects
@@ -98,6 +101,7 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 | Track | Status | Location |
 |---|---|---|
 | Decorators: closures, `@wraps`, timing/retry patterns | 🚧 In progress | `python-advanced-plus-api/topics/decorators/` |
+| Itertools: `islice`, `chain`, `groupby`, `batched` | ✅ Complete | `python-advanced-plus-api/topics/itertools/` |
 
 ## Reference
 
@@ -538,6 +542,93 @@ def timer(func):
 @timer
 def total_sum(n):
     return sum(i for i in range(n))
+```
+
+### Itertools
+
+`roadmap/phase-1/python-advanced-plus-api/topics/itertools/`
+
+The `itertools` standard library module — a toolkit of iterator-building functions that stay lazy, processing one item at a time instead of loading a full sequence into memory. Covered across four files, each isolating one tool.
+
+#### `islice`
+
+`topics/itertools/islice.py`
+
+Slices an iterator the way `[:]` slices a list, but without materializing it — the source is a generator, which can't be indexed since it only produces items on `next()`.
+
+- **Why list slicing doesn't work on generators** — a list loads every item into memory up front, so `[:2]` works; a generator only produces a value when pulled, so there's nothing to index into ahead of time.
+- **`islice` shares the underlying worker** — `itertools.islice(gen, 1)` doesn't copy `gen`, it wraps it; pulling from the `islice` object advances `gen` itself, so whatever `list(gen)` returns afterward picks up from wherever the slice left off.
+- **A `range` is a reusable source, a generator is not** — three separate `islice` calls over the same `range(20)` (`islice(nums, 5)`, `islice(nums, 5, 10)`, `islice(nums, 0, 20, 3)`) don't interfere with each other, because each call re-reads from `range`'s start/stop/step rather than consuming a shared cursor.
+- **Chained `islice` calls over one generator do interfere** — three `islice` calls over the same `(x * 10 for x in range(10))` each continue from where the previous one stopped, since a generator (unlike `range`) is a single, stateful worker with no way to "rewind."
+- **The practical case: peeking at an infinite stream** — `islice(infinite_counter(), 5)` takes exactly 5 items from a generator that would otherwise loop forever; `islice` stops pulling once its own count is satisfied, so `list()` on the slice terminates even though `list()` on the raw infinite generator never would.
+
+```python
+gen = (i**2 for i in myList)
+genSlice = itertools.islice(gen, 1)
+list(genSlice)   # consumes one item from gen
+list(gen)        # continues from where genSlice left off
+```
+
+#### `chain`
+
+`topics/itertools/chain.py`
+
+Concatenates multiple iterables into a single lazy stream, pulling from each in turn without building an intermediate combined list.
+
+- **Basic concatenation** — `itertools.chain(l, r)` walks `l` to exhaustion, then `r`, yielding one combined sequence; `chain.from_iterable(l)` does the same for a list-of-iterables, flattening one level.
+- **`chain` also shares the underlying worker** — `chain([10, 20], gen)` pulls the two literal values first, then starts drawing from `gen`; whatever `next()` calls chain has already made against `gen` are gone from it — `list(gen)` afterward only returns what's left.
+- **Flattening a generator of ranges** — `chain.from_iterable(range(i) for i in range(4))` flattens `range(0), range(1), range(2), range(3)` (`[]`, `[0]`, `[0, 1]`, `[0, 1, 2]`) into a single sequence, `[0, 0, 1, 0, 1, 2]`.
+
+```python
+gen = (x for x in range(5))
+chained = itertools.chain([10, 20], gen)
+next(chained)  # 10 — from the list, gen untouched
+next(chained)  # 20 — from the list, gen untouched
+next(chained)  # 0  — first pull from gen
+list(gen)      # [1, 2, 3, 4] — gen resumes from where chain left it
+```
+
+#### `groupby`
+
+`topics/itertools/groupBy.py`
+
+Groups **consecutive** equal items — not all items sharing a key, only runs of adjacent ones — and returns a lazy `(key, group_iterator)` pair per run.
+
+- **Consecutive-only grouping** — unsorted `[1, 1, 2, 2, 3, 1, 1]` produces four groups (`1`, `2`, `3`, `1`), not three; the trailing `1`s form their own group because they aren't adjacent to the earlier `1`s.
+- **Sorting first is the fix** — sorting brings equal items next to each other, so the same data reduces to one group per distinct value.
+- **Each group is a shared, single-use iterator** — collecting `group` objects into a list *before* consuming them and then reading them afterward returns empty lists for all of them, because `groupby` only advances far enough to detect the next key change, and doing that exhausts the current group's iterator as a side effect before the loop body gets a chance to consume it.
+- **Grouping by a key function** — `groupby(words, key=lambda w: w[0])` groups by first letter, after sorting by the same key; without matching sort and group keys, non-adjacent matches split into separate groups exactly like the unsorted-numbers case.
+- **Counting per group** — `len(list(group))` gives a per-key count, provided the group is consumed (via `list()`) before moving to the next key.
+
+```python
+data = [1, 1, 2, 2, 3, 1, 1]
+for key, group in itertools.groupby(data):
+    print(f"{key} : {list(group)}")
+# 1 : [1, 1]
+# 2 : [2, 2]
+# 3 : [3]
+# 1 : [1, 1]        <- trailing 1s, not merged with the first group
+```
+
+#### `batched`
+
+`topics/itertools/batched.py`
+
+Splits an iterable into fixed-size chunks, lazily — one batch is in memory at a time — with the final batch holding whatever remains, even if that's fewer than the requested size.
+
+- **Partial last batch** — `batched(range(23), 5)` yields four full 5-item batches and a final batch of 3, since 23 doesn't divide evenly by 5.
+- **Even division leaves no partial batch** — `batched(range(12), 4)` yields exactly three 4-item batches with nothing left over.
+- **Batch size larger than the data** — `batched([1, 2, 3], 10)` yields a single batch containing everything (`(1, 2, 3)`), since there's nothing left to fill a second batch.
+- **The real-world shape: batched API calls** — `documents = list(range(100))` batched by 15 and passed to a `@retry`-decorated `send_batch(batch)`; six batches of 15 followed by one of 10, tying `batched` together with the `@retry` decorator pattern from the [Decorators](#decorators) topic.
+
+```python
+for batch in itertools.batched(range(23), 5):
+    print(batch)
+# (0, 1, 2, 3, 4)
+# (5, 6, 7, 8, 9)
+# (10, 11, 12, 13, 14)
+# (15, 16, 17, 18, 19)
+# (20, 21, 22)          <- partial last batch
 ```
 
 ### Foundations
