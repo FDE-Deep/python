@@ -20,6 +20,7 @@ A structured, self-paced curriculum for building Python fluency — from core da
   - [Interview Practice](#interview-practice)
   - [Decorators](#decorators)
   - [Itertools](#itertools)
+  - [Pytest](#pytest)
   - [Foundations](#foundations)
 - [Data Structure Complexity Cheatsheet](#data-structure-complexity-cheatsheet)
 - [Projects](#projects)
@@ -41,6 +42,7 @@ Topics build in roughly this order:
 9. **Interview practice** — mixed-topic recall drills revisiting gaps found across all of the above
 10. **Decorators** *(new track: Python Advanced + API)* — closures wrapping functions, `@wraps`, and real-world patterns like timing and retry
 11. **Itertools** — lazy iterator-building tools: `islice`, `chain`, `groupby`, `batched`
+12. **Pytest** — testing real code (not toy examples) with plain asserts, `@parametrize`, `pytest.raises`, fixtures, and `tmp_path` for file I/O
 
 ## Repository Structure
 
@@ -55,8 +57,9 @@ python/
 │           ├── facts/             # short, single-concept deep dives
 │           └── interview-practice/ # mixed-topic recall drills, one file revisiting gaps across all topics
 │       └── python-advanced-plus-api/
-│           └── topics/            # concept write-ups + exercises, one file per topic
-│               └── itertools/     # one file per itertools function (islice, chain, groupBy, batched)
+│           ├── topics/            # concept write-ups + exercises, one file per topic
+│           │   └── itertools/     # one file per itertools function (islice, chain, groupBy, batched)
+│           └── pytest-practice/   # tests against real code from earlier topics, not toy examples
 ├── basics/                        # earliest exercises (pre-roadmap), superseded by roadmap/
 ├── oop/                           # earliest OOP exercises, superseded by roadmap/topics/OOPS/
 └── projects/                      # applied, standalone projects
@@ -102,6 +105,7 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 |---|---|---|
 | Decorators: closures, `@wraps`, timing/retry patterns | 🚧 In progress | `python-advanced-plus-api/topics/decorators/` |
 | Itertools: `islice`, `chain`, `groupby`, `batched` | ✅ Complete | `python-advanced-plus-api/topics/itertools/` |
+| Pytest: parametrize, `pytest.raises`, fixtures, `tmp_path` | ✅ Complete | `python-advanced-plus-api/pytest-practice/` |
 
 ## Reference
 
@@ -629,6 +633,35 @@ for batch in itertools.batched(range(23), 5):
 # (10, 11, 12, 13, 14)
 # (15, 16, 17, 18, 19)
 # (20, 21, 22)          <- partial last batch
+```
+
+### Pytest
+
+`roadmap/phase-1/python-advanced-plus-api/pytest-practice/`
+
+Rather than toy examples, tests real code written for earlier topics (`add`, `set_age`, `Library`, `Item`, lifted straight into `index.py`) — `pytest` and `pytest-cov` installed via `python -m pip install pytest pytest-cov`, coverage run with `python -m pytest --cov=.`.
+
+- **Basic tests + parametrize** — plain `assert add(2, 3) == 5`, then `@pytest.mark.parametrize("a,b,expected", [...])` collapsing several input/output pairs into one test function instead of repeating it per case.
+- **Exceptions with `pytest.raises`** — `with pytest.raises(ValueError): set_age(-5)` confirms the bad-input path raises; separate parametrized tests cover the valid-input success path (`set_age(10) == 10`) and multiple invalid ages, keeping "raises" and "returns" assertions apart.
+- **A fixture** — `@pytest.fixture def sample_library()` returns a fresh `Library("Sample")`; three tests (`test_Library`, `test_add_item`, `test_fresh_instance_library`) each receive their own instance via the fixture parameter, so mutating `.items` in one test (adding a book) doesn't leak into the next — pytest re-runs the fixture function per test rather than sharing one object.
+- **File I/O with `tmp_path`** — `test_save_load_library(tmp_path)` uses pytest's built-in `tmp_path` fixture (a per-test temporary directory) to round-trip `Library.save()`/`Library.load()` through a real JSON file on disk without touching any file the repo tracks, then asserts the reloaded object matches the original (`name`, item count, item name).
+
+```python
+@pytest.fixture
+def sample_library():
+    return Library("Sample")
+
+def test_add_item(sample_library):
+    sample_library.add_item(Item("book"))
+    assert sample_library.items["book"].name == "book"
+
+def test_save_load_library(tmp_path):
+    filepath = f"{tmp_path}/library.json"
+    library = Library("Test")
+    library.add_item(Item("book"))
+    library.save(filepath)
+    loaded = Library.load(filepath)
+    assert loaded.name == "Test"
 ```
 
 ### Foundations
