@@ -1,2 +1,9 @@
 .vscode
 .mypy_cache
+__pycache__
+*.pyc
+.pytest_cache
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml

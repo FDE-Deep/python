@@ -88,3 +88,62 @@ class Item:
     @classmethod
     def from_dict(cls, item):
         return cls(item["name"])
+
+
+# Mock
+
+# Practice set
+
+# 1 — Basic mock with patch
+# Write get_doubled() that calls fetch_value() and returns its result × 2. In a test, patch fetch_value to return 5, and assert get_doubled() returns 10. (Tests your × 2 logic without the real fetch_value.)
+
+
+def fetch_value():
+    return 2
+
+
+def get_doubled():
+    return fetch_value() * 2
+
+
+# 2 — side_effect to test retry recovering
+# Take your @retry. Use Mock(side_effect=[...]) to make a fake fail twice (raise) then succeed. Apply retry, and assert (a) it returns the success value, (b) call_count == 3.
+
+from functools import wraps
+import time
+
+
+def retry(attempts=1, delay=1, offset=1):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            current_delay = delay
+            for attempt in range(1, attempts + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f"Attempt: {attempt} failed, Reason - {e}")
+                    if attempt == attempts:
+                        raise
+                    print(f"......Retrying in {current_delay} seconds")
+                    time.sleep(delay)
+                    current_delay *= offset
+
+        return wrapper
+
+    return decorator
+
+
+count = {"n": 0}
+
+
+@retry(attempts=5, delay=1, offset=2)
+def testRetry():
+    count["n"] += 1
+    if count["n"] < 2:
+        raise ValueError("Count is less than 2")
+    print(f"Value of count is {count["n"]}")
+    return count["n"]
+
+
+testRetry()

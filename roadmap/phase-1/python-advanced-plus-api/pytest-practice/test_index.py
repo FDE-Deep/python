@@ -1,5 +1,6 @@
 import pytest
-from index import add, set_age, Library, Item
+from unittest.mock import patch, Mock
+from index import add, set_age, Library, Item, get_doubled, retry
 
 # 1 — Basic tests + parametrize
 
@@ -80,3 +81,49 @@ def test_save_load_library(tmp_path):
     assert load.name == "Test"
     assert len(load.items) > 0
     assert load.items["book"].name == "book"
+
+
+# Mock
+
+# Practice set
+
+# 1 — Basic mock with patch
+# Write get_doubled() that calls fetch_value() and returns its result × 2. In a test, patch fetch_value to return 5, and assert get_doubled() returns 10. (Tests your × 2 logic without the real fetch_value.)
+
+
+def test_get_doubled():
+    with patch("index.fetch_value") as mock:
+        mock.return_value = 5
+        assert get_doubled() == 10
+        assert mock.call_count == 1
+
+
+# 2 — side_effect to test retry recovering
+# Take your @retry. Use Mock(side_effect=[...]) to make a fake fail twice (raise) then succeed. Apply retry, and assert (a) it returns the success value, (b) call_count == 3.
+
+
+def test_testRetry():
+    with patch("index.time.sleep"):
+        mock = Mock(
+            side_effect=[
+                ValueError("Count is less than 2"),
+                ValueError("Count is less than 2"),
+                3,
+            ]
+        )
+        wrapper = retry(attempts=3)(mock)
+        assert wrapper() == 3
+        assert mock.call_count == 3
+
+
+# 3 — Test retry re-raises when all attempts fail
+# Use Mock(side_effect=SomeError(...)) (raises every call). Apply retry(attempts=3). Assert that calling it raises (with pytest.raises), confirming your "re-raise when exhausted" logic. Also assert call_count == 3.
+
+
+def test_retry_fails():
+    with patch("index.time.sleep"):
+        mock = Mock(side_effect=ValueError("Catch value error when retry exhausts"))
+        wrapper = retry(attempts=3)(mock)
+        with pytest.raises(ValueError):
+            wrapper()
+        assert mock.call_count == 3
