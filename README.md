@@ -21,6 +21,7 @@ A structured, self-paced curriculum for building Python fluency — from core da
   - [Decorators](#decorators)
   - [Itertools](#itertools)
   - [Pytest](#pytest)
+  - [Pathlib](#pathlib)
   - [Foundations](#foundations)
 - [Data Structure Complexity Cheatsheet](#data-structure-complexity-cheatsheet)
 - [Projects](#projects)
@@ -43,6 +44,7 @@ Topics build in roughly this order:
 10. **Decorators** *(new track: Python Advanced + API)* — closures wrapping functions, `@wraps`, and real-world patterns like timing and retry
 11. **Itertools** — lazy iterator-building tools: `islice`, `chain`, `groupby`, `batched`
 12. **Pytest** — testing real code (not toy examples) with plain asserts, `@parametrize`, `pytest.raises`, fixtures, and `tmp_path` for file I/O
+13. **Pathlib** — object-oriented filesystem paths (`Path`), replacing `os.path` string manipulation for directory creation, file read/write, and JSON/CSV round-trips
 
 ## Repository Structure
 
@@ -59,7 +61,8 @@ python/
 │       └── python-advanced-plus-api/
 │           ├── topics/            # concept write-ups + exercises, one file per topic
 │           │   └── itertools/     # one file per itertools function (islice, chain, groupBy, batched)
-│           └── pytest-practice/   # tests against real code from earlier topics, not toy examples
+│           ├── pytest-practice/   # tests against real code from earlier topics, not toy examples
+│           └── pathlib/           # Path-based file I/O: mkdir, write/read text, JSON and CSV round-trips
 ├── basics/                        # earliest exercises (pre-roadmap), superseded by roadmap/
 ├── oop/                           # earliest OOP exercises, superseded by roadmap/topics/OOPS/
 └── projects/                      # applied, standalone projects
@@ -106,6 +109,7 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 | Decorators: closures, `@wraps`, timing/retry patterns | 🚧 In progress | `python-advanced-plus-api/topics/decorators/` |
 | Itertools: `islice`, `chain`, `groupby`, `batched` | ✅ Complete | `python-advanced-plus-api/topics/itertools/` |
 | Pytest: parametrize, `pytest.raises`, fixtures, `tmp_path` | ✅ Complete | `python-advanced-plus-api/pytest-practice/` |
+| Pathlib: `Path` basics, `mkdir`, `write_text`/`read_text`, JSON/CSV round-trips | ✅ Complete | `python-advanced-plus-api/pathlib/` |
 
 ## Reference
 
@@ -662,6 +666,29 @@ def test_save_load_library(tmp_path):
     library.save(filepath)
     loaded = Library.load(filepath)
     assert loaded.name == "Test"
+```
+
+### Pathlib
+
+`roadmap/phase-1/python-advanced-plus-api/pathlib/`
+
+The `pathlib` module's `Path` object — an object-oriented, cross-platform replacement for building and manipulating filesystem paths with `os.path` string joins.
+
+- **Path basics** — `Path("data/reports/summary.txt")` exposes the path's parts as properties: `.name` (`summary.txt`), `.stem` (`summary`), `.suffix` (`.txt`), and `.parent` (`data\reports`), instead of slicing strings by hand.
+- **Safe directory creation + write** — `Path.mkdir(parents=True, exist_ok=True)` creates a folder (and any missing parents) without raising if it already exists, then `write_text` / `read_text` write and read a file's full contents in one call each — the same "make folder, write file" pattern used for the library project's `save()`.
+- **JSON round-trip** — a `Path` object passed straight to `open()` (or via `json.dump` / `json.load`) writes and reads a dict as JSON, confirming the loaded data matches the original.
+- **CSV read/write** — `csv.writer` writes a header row plus data rows to a `Path`-backed file (`newline=""` to avoid extra blank lines on Windows), and `csv.DictReader` reads each row back as a dict.
+
+```python
+from pathlib import Path
+
+p = Path("data/reports/summary.txt")
+print(p.name, p.stem, p.suffix, p.parent)  # summary.txt summary .txt data\reports
+
+Path("test_output/").mkdir(parents=True, exist_ok=True)
+out = Path("test_output/output.txt")
+out.write_text("Hello World")
+assert out.read_text() == "Hello World"
 ```
 
 ### Foundations
