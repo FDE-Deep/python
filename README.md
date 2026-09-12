@@ -742,8 +742,8 @@ The earliest exercises, written before the `roadmap/` structure was adopted. Con
 
 ### word-analyzer
 
-`projects/word-analyzer/` — a standalone command-line tool (its own git repository) that streams a text file line-by-line via a generator and reports the most frequent words, keeping memory flat regardless of file size. See [`https://github.com/FDE-Deep/word-analyzer`] for setup and usage.
+`projects/word-analyzer/` — a standalone command-line tool (its own git repository) that streams a text file line-by-line via a generator and reports the most frequent words, keeping memory flat regardless of file size. See https://github.com/FDE-Deep/word-analyzer for setup and usage.
 
 ### library-system
 
-`projects/library-system/` — a standalone command-line library management system (its own git repository), built as an OOP capstone. Models books, magazines, and members through an abstract item hierarchy, supports borrowing/returning with validation, and persists state to JSON. See [`https://github.com/FDE-Deep/library-system`] for setup, usage, and tests.
+`projects/library-system/` — a standalone command-line library management system (its own git repository), built as an OOP capstone. Models books, magazines, and members through an abstract item hierarchy, supports borrowing/returning with validation, and persists state to JSON. See https://github.com/FDE-Deep/library-system for setup, usage, and tests.
