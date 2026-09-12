@@ -41,7 +41,7 @@ Topics build in roughly this order:
 7. **Context managers** — `__enter__`/`__exit__`, guaranteed cleanup, the `@contextmanager` generator form
 8. **Type hints** — annotating variables, containers, classes, and functions; checked by Pylance/mypy, not the interpreter
 9. **Interview practice** — mixed-topic recall drills revisiting gaps found across all of the above
-10. **Decorators** *(new track: Python Advanced + API)* — closures wrapping functions, `@wraps`, and real-world patterns like timing and retry
+10. **Decorators** _(new track: Python Advanced + API)_ — closures wrapping functions, `@wraps`, and real-world patterns like timing and retry
 11. **Itertools** — lazy iterator-building tools: `islice`, `chain`, `groupby`, `batched`
 12. **Pytest** — testing real code (not toy examples) with plain asserts, `@parametrize`, `pytest.raises`, fixtures, and `tmp_path` for file I/O
 13. **Pathlib** — object-oriented filesystem paths (`Path`), replacing `os.path` string manipulation for directory creation, file read/write, and JSON/CSV round-trips
@@ -86,31 +86,31 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 
 ### Phase 1 — Python Fluency
 
-| Track | Status | Location |
-|---|---|---|
-| Core data types (list, tuple, set, dict) | ✅ Complete | `topics/` |
-| Comprehensions (list, dict, set, generator) | ✅ Complete | `exercise/`, `topics/generators.py` |
-| Iterables & iterators | ✅ Complete | `facts/forLoop.py` |
-| Functions (`*args`, `**kwargs`, closures) | ✅ Complete | `topics/functions.py` |
-| OOP: classes, dunder methods, composition | ✅ Complete | `topics/OOPS/` |
-| OOP: data classes, inheritance, MRO | ✅ Complete | `topics/OOPS/` |
-| OOP: polymorphism, duck typing | ✅ Complete | `topics/OOPS/` |
-| OOP: class methods, factory patterns | ✅ Complete | `topics/OOPS/` |
-| OOP: encapsulation, properties | ✅ Complete | `topics/OOPS/` |
-| OOP: abstract base classes | ✅ Complete | `topics/OOPS/` |
-| Exception handling: try/except/else/finally, custom exceptions | ✅ Complete | `topics/exception-handling/` |
-| Context managers: `__enter__`/`__exit__`, `@contextmanager` | ✅ Complete | `topics/context-manager/` |
-| Type hints: variables, containers, classes, functions | ✅ Complete | `topics/type-hint/` |
-| Interview practice: mixed-topic recall drills | ✅ Complete | `interview-practice/` |
+| Track                                                          | Status      | Location                            |
+| -------------------------------------------------------------- | ----------- | ----------------------------------- |
+| Core data types (list, tuple, set, dict)                       | ✅ Complete | `topics/`                           |
+| Comprehensions (list, dict, set, generator)                    | ✅ Complete | `exercise/`, `topics/generators.py` |
+| Iterables & iterators                                          | ✅ Complete | `facts/forLoop.py`                  |
+| Functions (`*args`, `**kwargs`, closures)                      | ✅ Complete | `topics/functions.py`               |
+| OOP: classes, dunder methods, composition                      | ✅ Complete | `topics/OOPS/`                      |
+| OOP: data classes, inheritance, MRO                            | ✅ Complete | `topics/OOPS/`                      |
+| OOP: polymorphism, duck typing                                 | ✅ Complete | `topics/OOPS/`                      |
+| OOP: class methods, factory patterns                           | ✅ Complete | `topics/OOPS/`                      |
+| OOP: encapsulation, properties                                 | ✅ Complete | `topics/OOPS/`                      |
+| OOP: abstract base classes                                     | ✅ Complete | `topics/OOPS/`                      |
+| Exception handling: try/except/else/finally, custom exceptions | ✅ Complete | `topics/exception-handling/`        |
+| Context managers: `__enter__`/`__exit__`, `@contextmanager`    | ✅ Complete | `topics/context-manager/`           |
+| Type hints: variables, containers, classes, functions          | ✅ Complete | `topics/type-hint/`                 |
+| Interview practice: mixed-topic recall drills                  | ✅ Complete | `interview-practice/`               |
 
 ### Phase 1 — Python Advanced + API
 
-| Track | Status | Location |
-|---|---|---|
-| Decorators: closures, `@wraps`, timing/retry patterns | 🚧 In progress | `python-advanced-plus-api/topics/decorators/` |
-| Itertools: `islice`, `chain`, `groupby`, `batched` | ✅ Complete | `python-advanced-plus-api/topics/itertools/` |
-| Pytest: parametrize, `pytest.raises`, fixtures, `tmp_path` | ✅ Complete | `python-advanced-plus-api/pytest-practice/` |
-| Pathlib: `Path` basics, `mkdir`, `write_text`/`read_text`, JSON/CSV round-trips, `glob`/`rglob` | ✅ Complete | `python-advanced-plus-api/pathlib/` |
+| Track                                                                                           | Status         | Location                                      |
+| ----------------------------------------------------------------------------------------------- | -------------- | --------------------------------------------- |
+| Decorators: closures, `@wraps`, timing/retry patterns                                           | 🚧 In progress | `python-advanced-plus-api/topics/decorators/` |
+| Itertools: `islice`, `chain`, `groupby`, `batched`                                              | ✅ Complete    | `python-advanced-plus-api/topics/itertools/`  |
+| Pytest: parametrize, `pytest.raises`, fixtures, `tmp_path`                                      | ✅ Complete    | `python-advanced-plus-api/pytest-practice/`   |
+| Pathlib: `Path` basics, `mkdir`, `write_text`/`read_text`, JSON/CSV round-trips, `glob`/`rglob` | ✅ Complete    | `python-advanced-plus-api/pathlib/`           |
 
 ## Reference
 
@@ -387,7 +387,7 @@ def balance(self, new_value):
 
 `OOPS/abstractClass.py`
 
-`ABC` and `@abstractmethod` (from the `abc` module) turn a class into a contract: subclasses **must** implement every abstract method, or instantiation fails. Contrasted directly with duck typing — abstraction *enforces* the interface at instantiation time, duck typing merely *hopes* the method exists at call time.
+`ABC` and `@abstractmethod` (from the `abc` module) turn a class into a contract: subclasses **must** implement every abstract method, or instantiation fails. Contrasted directly with duck typing — abstraction _enforces_ the interface at instantiation time, duck typing merely _hopes_ the method exists at call time.
 
 Covers a base `Shape(ABC)` with abstract `area()`/`perimeter()`, mixing enforced (abstract) methods with shared concrete methods (`describe()`, implemented once on the base class and inherited for free), and why code written against the abstraction (`print_all_areas(shapes)`) is safe to write — every `Shape` is guaranteed to have `area()`.
 
@@ -410,7 +410,7 @@ Covers the `try`/`except`/`else`/`finally` machinery, catching built-in exceptio
 - **Multiple `except` blocks** — matching different exception types (`ValueError` vs `ZeroDivisionError`) to different messages; the first matching block wins.
 - **`raise`** — raising a built-in exception (`ValueError`) with a custom message from inside a validation function, then catching it at the call site with `except ValueError as e`.
 - **`finally`** — always runs, whether the `try` succeeded, raised, or returned — including printing after a `return` from inside the `try`.
-- **`else`** — runs only if the `try` block completes with no exception *and* reaches its own end. A `return` inside `try` exits the function immediately and skips `else` entirely, since `else` fires on falling off the end of `try`, not on success as such.
+- **`else`** — runs only if the `try` block completes with no exception _and_ reaches its own end. A `return` inside `try` exits the function immediately and skips `else` entirely, since `else` fires on falling off the end of `try`, not on success as such.
 - **Custom exceptions** — defining `class NegativeNumberError(Exception): pass` and raising/catching it exactly like a built-in.
 - **Combining it all** — a `withdraw(balance, amount)` example with two custom-ish exception types (`InsufficientFundsError`, `ValueError`) caught in separate `except` clauses, with a shared `else` for the success path.
 
@@ -442,7 +442,7 @@ Covers the `with` statement's protocol — `__enter__`/`__exit__` on a class, th
 
 - **The enter → block → exit sequence** — a class with `__enter__` (prints, returns `self`) and `__exit__` (prints); `with Greeter() as greet:` traces the order setup and teardown fire relative to the block body.
 - **`as` binds whatever `__enter__` returns** — `__enter__` can return anything (`self`, a string, a connection object); `with X() as v:` just captures that return value.
-- **Cleanup runs even on error** — `__exit__` still fires if the block raises; the exception only propagates *after* `__exit__` returns (unless `__exit__` itself returns a truthy value to suppress it). Same guarantee as `finally`.
+- **Cleanup runs even on error** — `__exit__` still fires if the block raises; the exception only propagates _after_ `__exit__` returns (unless `__exit__` itself returns a truthy value to suppress it). Same guarantee as `finally`.
 - **A practical example (`Timer`)** — `__enter__` records a start time, `__exit__` computes and prints elapsed time; a real, reusable measurement tool built from the protocol.
 - **`@contextmanager`** — from `contextlib`, turns a generator function into a context manager without writing a class: code before `yield` is `__enter__`, the yielded value is what `as` binds, code after `yield` is `__exit__`.
 - **Guaranteed cleanup in the generator form** — a bare `yield` skips the post-`yield` cleanup entirely if the block raises, since an unhandled exception propagates out of the generator at the `yield` point; wrapping the `yield` in `try`/`finally` is what makes cleanup run unconditionally, mirroring `__exit__`'s guarantee in the class form.
@@ -534,7 +534,7 @@ Opens a new track (Python Advanced + API) with `@decorator` syntax: a decorator 
 - **A decorator with behavior** (`announce`) — prints before/after messages using `func.__name__` for context, then returns the result unchanged — the side-effect-only decorator pattern.
 - **A decorator that changes the result** (`double_result`) — calls the function and returns a transformed value (`result * 2`) instead of the original — decorators aren't limited to side effects; they can rewrite what the caller gets back.
 - **`@timer`** — records a start time in the wrapper, calls the function, computes elapsed time from the difference, prints it, and still returns the original result — the general "measure around a call" shape, reused from the `Timer` context manager topic but as a decorator instead of a `with` block.
-- **`@retry`** *(in progress)* — the next exercise: retry a call up to 3 times, catching and logging each failed attempt, re-raising the last exception only if every attempt fails.
+- **`@retry`** _(in progress)_ — the next exercise: retry a call up to 3 times, catching and logging each failed attempt, re-raising the last exception only if every attempt fails.
 
 ```python
 from functools import wraps
@@ -605,7 +605,7 @@ Groups **consecutive** equal items — not all items sharing a key, only runs of
 
 - **Consecutive-only grouping** — unsorted `[1, 1, 2, 2, 3, 1, 1]` produces four groups (`1`, `2`, `3`, `1`), not three; the trailing `1`s form their own group because they aren't adjacent to the earlier `1`s.
 - **Sorting first is the fix** — sorting brings equal items next to each other, so the same data reduces to one group per distinct value.
-- **Each group is a shared, single-use iterator** — collecting `group` objects into a list *before* consuming them and then reading them afterward returns empty lists for all of them, because `groupby` only advances far enough to detect the next key change, and doing that exhausts the current group's iterator as a side effect before the loop body gets a chance to consume it.
+- **Each group is a shared, single-use iterator** — collecting `group` objects into a list _before_ consuming them and then reading them afterward returns empty lists for all of them, because `groupby` only advances far enough to detect the next key change, and doing that exhausts the current group's iterator as a side effect before the loop body gets a chance to consume it.
 - **Grouping by a key function** — `groupby(words, key=lambda w: w[0])` groups by first letter, after sorting by the same key; without matching sort and group keys, non-adjacent matches split into separate groups exactly like the unsorted-numbers case.
 - **Counting per group** — `len(list(group))` gives a per-key count, provided the group is consumed (via `list()`) before moving to the next key.
 
@@ -705,45 +705,45 @@ for csv_file in sorted(data_folder.glob("*.csv")):
 
 The earliest exercises, written before the `roadmap/` structure was adopted. Concepts here are superseded by the more detailed treatment above but remain as the original record.
 
-| File | Covers |
-|---|---|
-| `basics/variables/index.py` | First program, variable assignment, arithmetic |
-| `basics/datatypes/index.py` | Overview of `int`, `float`, `str`, `None`, `bool`, `list`, `tuple`, `set`, `dict`, `complex` |
-| `basics/datatypes/list.py` | Early list operations |
-| `basics/datatypes/listComprehension.py` | Introductory list comprehension |
-| `basics/datatypes/tuple.py` | Early tuple operations |
-| `basics/datatypes/set.py` | Early set operations |
-| `basics/datatypes/string.py` | Quoting, escaping, concatenation, slicing |
-| `basics/datatypes/dict.py` | Early dictionary operations |
-| `basics/funtions/index.py` | First functions, parameters, `return` |
-| `basics/userInput/index.py` | Reading input with `input()` |
-| `basics/conditionalStatements/if-elif-else.py` | `if`/`elif`/`else`, input validation |
-| `basics/conditionalStatements/match.py` | `match`/`case` (Python 3.10+) |
-| `basics/operators/*.py` | Arithmetic, assignment, comparison, and logical operators |
-| `basics/loop/while.py` | `while` loops, nested loops, ASCII pattern generation |
-| `basics/loop/for.py` | `for` loops, `continue`, `break` |
-| `oop/class.py` | First class, `self`, `__init__` |
-| `oop/classMethod.py` | Class variables and class methods |
-| `oop/staticMethod.py` | `@staticmethod` |
+| File                                           | Covers                                                                                       |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `basics/variables/index.py`                    | First program, variable assignment, arithmetic                                               |
+| `basics/datatypes/index.py`                    | Overview of `int`, `float`, `str`, `None`, `bool`, `list`, `tuple`, `set`, `dict`, `complex` |
+| `basics/datatypes/list.py`                     | Early list operations                                                                        |
+| `basics/datatypes/listComprehension.py`        | Introductory list comprehension                                                              |
+| `basics/datatypes/tuple.py`                    | Early tuple operations                                                                       |
+| `basics/datatypes/set.py`                      | Early set operations                                                                         |
+| `basics/datatypes/string.py`                   | Quoting, escaping, concatenation, slicing                                                    |
+| `basics/datatypes/dict.py`                     | Early dictionary operations                                                                  |
+| `basics/funtions/index.py`                     | First functions, parameters, `return`                                                        |
+| `basics/userInput/index.py`                    | Reading input with `input()`                                                                 |
+| `basics/conditionalStatements/if-elif-else.py` | `if`/`elif`/`else`, input validation                                                         |
+| `basics/conditionalStatements/match.py`        | `match`/`case` (Python 3.10+)                                                                |
+| `basics/operators/*.py`                        | Arithmetic, assignment, comparison, and logical operators                                    |
+| `basics/loop/while.py`                         | `while` loops, nested loops, ASCII pattern generation                                        |
+| `basics/loop/for.py`                           | `for` loops, `continue`, `break`                                                             |
+| `oop/class.py`                                 | First class, `self`, `__init__`                                                              |
+| `oop/classMethod.py`                           | Class variables and class methods                                                            |
+| `oop/staticMethod.py`                          | `@staticmethod`                                                                              |
 
 ## Data Structure Complexity Cheatsheet
 
-| Operation / Type | `list` | `tuple` | `set` | `dict` |
-|---|---|---|---|---|
-| Access by index `x[i]` | O(1) | O(1) | — (no index) | O(1) by *key* |
-| Search / membership `v in x` | O(n) | O(n) | O(1) avg | O(1) avg (by key) |
-| Insert / add | O(1) append end · O(n) mid | immutable | O(1) avg | O(1) avg |
-| Delete | O(1) end · O(n) mid/value | immutable | O(1) avg | O(1) avg |
-| Ordered? | yes | yes | no | yes (insertion order) |
-| Duplicates? | yes | yes | no | keys unique |
-| Mutable? | yes | no | yes | yes |
+| Operation / Type             | `list`                     | `tuple`   | `set`        | `dict`                |
+| ---------------------------- | -------------------------- | --------- | ------------ | --------------------- |
+| Access by index `x[i]`       | O(1)                       | O(1)      | — (no index) | O(1) by _key_         |
+| Search / membership `v in x` | O(n)                       | O(n)      | O(1) avg     | O(1) avg (by key)     |
+| Insert / add                 | O(1) append end · O(n) mid | immutable | O(1) avg     | O(1) avg              |
+| Delete                       | O(1) end · O(n) mid/value  | immutable | O(1) avg     | O(1) avg              |
+| Ordered?                     | yes                        | yes       | no           | yes (insertion order) |
+| Duplicates?                  | yes                        | yes       | no           | keys unique           |
+| Mutable?                     | yes                        | no        | yes          | yes                   |
 
 ## Projects
 
 ### word-analyzer
 
-`projects/word-analyzer/` — a standalone command-line tool (its own git repository) that streams a text file line-by-line via a generator and reports the most frequent words, keeping memory flat regardless of file size. See [`projects/word-analyzer/readme.md`](projects/word-analyzer/readme.md) for setup and usage.
+`projects/word-analyzer/` — a standalone command-line tool (its own git repository) that streams a text file line-by-line via a generator and reports the most frequent words, keeping memory flat regardless of file size. See [`https://github.com/FDE-Deep/word-analyzer`] for setup and usage.
 
 ### library-system
 
-`projects/library-system/` — a standalone command-line library management system (its own git repository), built as an OOP capstone. Models books, magazines, and members through an abstract item hierarchy, supports borrowing/returning with validation, and persists state to JSON. See [`projects/library-system/readme.md`](projects/library-system/readme.md) for setup, usage, and tests.
+`projects/library-system/` — a standalone command-line library management system (its own git repository), built as an OOP capstone. Models books, magazines, and members through an abstract item hierarchy, supports borrowing/returning with validation, and persists state to JSON. See [`https://github.com/FDE-Deep/library-system`] for setup, usage, and tests.
