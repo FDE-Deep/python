@@ -67,3 +67,96 @@ with open(csvFile) as file:
 # {'name': 'Xicor', 'anime': 'Dragon Ball AF'}
 # {'name': 'Majin Vegeta', 'anime': 'Dragon Ball Z'}
 # {'name': 'Goku', 'anime': 'Dragon Ball Z'}
+
+
+# There are scenarios where we actually need to process multiple files from a folder
+# We can access those files using glob or rglob method.
+
+
+# In order to access file, we need to mention the pattern in  glob method
+
+# Example : path = Path("data").glob(*.csv) This will fetch all the csvs present at top level. Glob only checks the top level. If we want to check the subfolders also, use rglob
+
+# If we want to match a particular pattern, use ?. ? only matches single character. For example: Path("data").glob(file?[123].txt) This will return files which are having file starts with file and matches any of these 1 or 2 or 3.
+
+
+# Practice set
+
+# 1 — Set up and glob
+# First create a few test files: use mkdir to make a test_files/ folder, then write 3 files into it — a.txt, b.txt, and data.csv (use write_text with any content). Then use glob("*.txt") to find just the .txt files and print each. Predict which files it finds (and which it doesn't).
+
+# __file__ gives the path where script is present and resolve gives the absolute path and
+# parent returns the folder where script present.
+
+directory = Path(__file__).resolve().parent
+
+test_folder = directory / "data"
+
+test_folder.mkdir(parents=True, exist_ok=True)
+
+a = Path(test_folder / "a.txt")
+a.write_text("Hello from A")
+
+b = Path(test_folder / "b.txt")
+b.write_text("Hello from B")
+
+with open(test_folder / "data.csv", "w", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["first_name", "last_name"])
+    writer.writerows([["A", "B"], ["C", "D"]])
+
+with open(test_folder / "data1.csv", "w", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["first_name", "last_name"])
+    writer.writerows([["E", "F"], ["G", "H"]])
+
+
+for file in test_folder.glob("*.txt"):
+    print(file.read_text())
+
+
+for csvFile in test_folder.glob("*.csv"):
+    with open(csvFile, encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            print(row)
+
+
+# 2 — Different patterns
+# Using your test_files/ folder, glob for: (a) all files (*), (b) all .csv files, (c) all files (*.*). Print the results of each. Predict what each pattern matches.
+
+
+allFiles = test_folder.glob("*")
+print(list(allFiles))
+
+csvFiles = test_folder.glob("*.csv")
+print(list(csvFiles))
+
+files = test_folder.glob("*.*")
+print(list(files))
+
+# * and *.* give the same results. But "* will return the files which dont have . Here it returns the same output as "*.* because all file contains .
+
+# 3 — Count and sort
+# Glob all .txt files, sort them, and print them in sorted order. Then count how many .txt files there are. (Practices sorted() on glob output and counting.)
+
+sorted_files = sorted(test_folder.glob("*.txt"))
+print(len(sorted_files))
+
+
+# 4 — The real-world pattern (folder of files)
+# Create 2 CSV files in a folder, each with a header and a couple of rows. Then write a loop that globs all *.csv files, opens each (with encoding="utf-8"), reads them with DictReader, and prints each row. (This is the client-integration skeleton — find all CSVs in a folder, process each.)
+
+csvFiles = test_folder.glob("*.csv")
+for file in csvFiles:
+    with open(file, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            print(row)
+
+# output
+
+# {'first_name': 'A', 'last_name': 'B'}
+# {'first_name': 'C', 'last_name': 'D'}
+# {'first_name': 'E', 'last_name': 'F'}
+# {'first_name': 'G', 'last_name': 'H'}

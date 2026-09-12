@@ -62,11 +62,12 @@ python/
 │           ├── topics/            # concept write-ups + exercises, one file per topic
 │           │   └── itertools/     # one file per itertools function (islice, chain, groupBy, batched)
 │           ├── pytest-practice/   # tests against real code from earlier topics, not toy examples
-│           └── pathlib/           # Path-based file I/O: mkdir, write/read text, JSON and CSV round-trips
+│           └── pathlib/           # Path-based file I/O: mkdir, write/read text, JSON/CSV round-trips, glob/rglob
 ├── basics/                        # earliest exercises (pre-roadmap), superseded by roadmap/
 ├── oop/                           # earliest OOP exercises, superseded by roadmap/topics/OOPS/
 └── projects/                      # applied, standalone projects
-    └── word-analyzer/             # separate git repository — see its own README
+    ├── word-analyzer/             # separate git repository — see its own README
+    └── library-system/            # separate git repository — see its own README
 ```
 
 ## Getting Started
@@ -109,7 +110,7 @@ Read the file top-to-bottom: each script opens with a concept explanation in com
 | Decorators: closures, `@wraps`, timing/retry patterns | 🚧 In progress | `python-advanced-plus-api/topics/decorators/` |
 | Itertools: `islice`, `chain`, `groupby`, `batched` | ✅ Complete | `python-advanced-plus-api/topics/itertools/` |
 | Pytest: parametrize, `pytest.raises`, fixtures, `tmp_path` | ✅ Complete | `python-advanced-plus-api/pytest-practice/` |
-| Pathlib: `Path` basics, `mkdir`, `write_text`/`read_text`, JSON/CSV round-trips | ✅ Complete | `python-advanced-plus-api/pathlib/` |
+| Pathlib: `Path` basics, `mkdir`, `write_text`/`read_text`, JSON/CSV round-trips, `glob`/`rglob` | ✅ Complete | `python-advanced-plus-api/pathlib/` |
 
 ## Reference
 
@@ -678,6 +679,9 @@ The `pathlib` module's `Path` object — an object-oriented, cross-platform repl
 - **Safe directory creation + write** — `Path.mkdir(parents=True, exist_ok=True)` creates a folder (and any missing parents) without raising if it already exists, then `write_text` / `read_text` write and read a file's full contents in one call each — the same "make folder, write file" pattern used for the library project's `save()`.
 - **JSON round-trip** — a `Path` object passed straight to `open()` (or via `json.dump` / `json.load`) writes and reads a dict as JSON, confirming the loaded data matches the original.
 - **CSV read/write** — `csv.writer` writes a header row plus data rows to a `Path`-backed file (`newline=""` to avoid extra blank lines on Windows), and `csv.DictReader` reads each row back as a dict.
+- **`glob` / `rglob`** — `Path.glob(pattern)` matches files against a wildcard pattern, `*` for any characters and `?` for a single character (e.g. `file?[123].txt`), but only at the top level of the folder; `rglob` runs the same match recursively through subfolders. `Path(__file__).resolve().parent` locates files relative to the script itself rather than the current working directory.
+- **Pattern behavior** — `*` and `*.*` return the same files when every file in the folder has an extension (a name with no `.` matches `*` but not `*.*`); glob results aren't ordered, so `sorted(path.glob(...))` is needed for deterministic output.
+- **The real-world pattern** — glob a folder for all files matching an extension (e.g. `*.csv`), then loop over the matches opening and processing each one — the standard "find all files, process each" skeleton for batch file processing.
 
 ```python
 from pathlib import Path
@@ -689,6 +693,12 @@ Path("test_output/").mkdir(parents=True, exist_ok=True)
 out = Path("test_output/output.txt")
 out.write_text("Hello World")
 assert out.read_text() == "Hello World"
+
+data_folder = Path(__file__).resolve().parent / "data"
+for csv_file in sorted(data_folder.glob("*.csv")):
+    with open(csv_file, encoding="utf-8") as f:
+        for row in csv.DictReader(f):
+            print(row)
 ```
 
 ### Foundations
@@ -733,3 +743,7 @@ The earliest exercises, written before the `roadmap/` structure was adopted. Con
 ### word-analyzer
 
 `projects/word-analyzer/` — a standalone command-line tool (its own git repository) that streams a text file line-by-line via a generator and reports the most frequent words, keeping memory flat regardless of file size. See [`projects/word-analyzer/readme.md`](projects/word-analyzer/readme.md) for setup and usage.
+
+### library-system
+
+`projects/library-system/` — a standalone command-line library management system (its own git repository), built as an OOP capstone. Models books, magazines, and members through an abstract item hierarchy, supports borrowing/returning with validation, and persists state to JSON. See [`projects/library-system/readme.md`](projects/library-system/readme.md) for setup, usage, and tests.
